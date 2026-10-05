@@ -1,0 +1,1074 @@
+[
+  {
+    "id": "p01_motivo",
+    "eje": "A",
+    "numero": 1,
+    "texto": "¿Cuál es el motivo principal por el que quieres recibir este acompañamiento?",
+    "tipo": "select",
+    "opciones": [
+      {
+        "valor": "sin_motivo",
+        "etiqueta": "Sin motivo específico / quiero conocer el acompañamiento"
+      },
+      {
+        "valor": "autoestima",
+        "etiqueta": "Autoconcepto y autoestima"
+      },
+      {
+        "valor": "tristeza",
+        "etiqueta": "Tristeza, frustración o desánimo"
+      },
+      {
+        "valor": "violencia_pareja",
+        "etiqueta": "Violencia o control por parte de mi pareja o expareja"
+      },
+      {
+        "valor": "violencia_entorno",
+        "etiqueta": "Violencia en mi familia, trabajo o comunidad"
+      },
+      {
+        "valor": "conflictos",
+        "etiqueta": "Conflictos en mis relaciones con otras personas"
+      },
+      {
+        "valor": "consumo",
+        "etiqueta": "Consumo de alcohol u otras sustancias (propio o de alguien cercano)"
+      },
+      {
+        "valor": "orientacion_familiar",
+        "etiqueta": "Orientación familiar o de pareja"
+      },
+      {
+        "valor": "estres_trabajo",
+        "etiqueta": "Estrés frente al trabajo o la adaptación a un nuevo empleo"
+      },
+      {
+        "valor": "motivacion",
+        "etiqueta": "Motivación para lograr mis metas personales o laborales"
+      },
+      {
+        "valor": "autonomia",
+        "etiqueta": "Autonomía y toma de decisiones sobre mi vida o mi dinero"
+      },
+      {
+        "valor": "aprender",
+        "etiqueta": "Dificultades para aprender o concentrarme"
+      },
+      {
+        "valor": "duelo",
+        "etiqueta": "Un duelo o una pérdida reciente"
+      },
+      {
+        "valor": "entrevista",
+        "etiqueta": "Prepararme para una entrevista o proceso laboral"
+      },
+      {
+        "valor": "otro",
+        "etiqueta": "Otro"
+      }
+    ],
+    "requerido": true
+  },
+  {
+    "id": "p01_otro",
+    "eje": "A",
+    "numero": "1.1",
+    "texto": "Otro motivo, ¿cuál?",
+    "tipo": "texto",
+    "requerido": true,
+    "condicion": {
+      "dependeDe": "p01_motivo",
+      "mostrarSi": [
+        "otro"
+      ]
+    }
+  },
+  {
+    "id": "p02_llegada",
+    "eje": "A",
+    "numero": 2,
+    "texto": "¿Cómo llegaste a este acompañamiento?",
+    "tipo": "select",
+    "opciones": [
+      {
+        "valor": "propia",
+        "etiqueta": "Por mi propia decisión"
+      },
+      {
+        "valor": "empresa",
+        "etiqueta": "Porque mi empresa o líder me lo sugirió"
+      },
+      {
+        "valor": "profesional",
+        "etiqueta": "Porque una profesional del programa me lo recomendó"
+      },
+      {
+        "valor": "otro",
+        "etiqueta": "Otro"
+      }
+    ],
+    "requerido": true
+  },
+  {
+    "id": "p02_otro",
+    "eje": "A",
+    "numero": "2.1",
+    "texto": "Otro, ¿cuál?",
+    "tipo": "texto",
+    "requerido": true,
+    "condicion": {
+      "dependeDe": "p02_llegada",
+      "mostrarSi": [
+        "otro"
+      ]
+    }
+  },
+  {
+    "id": "p03_tratamiento",
+    "eje": "A",
+    "numero": 3,
+    "texto": "¿Actualmente estás en un tratamiento psicológico o psiquiátrico?",
+    "tipo": "select",
+    "opciones": [
+      {
+        "valor": "si",
+        "etiqueta": "Sí"
+      },
+      {
+        "valor": "no",
+        "etiqueta": "No"
+      },
+      {
+        "valor": "prefiero_no",
+        "etiqueta": "Prefiero no responder"
+      }
+    ],
+    "requerido": true
+  },
+  {
+    "id": "p03_quien",
+    "eje": "A",
+    "numero": "3.1",
+    "texto": "¿Nos cuentas brevemente quién te acompaña?",
+    "tipo": "texto",
+    "requerido": false,
+    "condicion": {
+      "dependeDe": "p03_tratamiento",
+      "mostrarSi": [
+        "si"
+      ]
+    }
+  },
+  {
+    "id": "p04_pareja",
+    "eje": "1",
+    "numero": 4,
+    "texto": "En los últimos 12 meses, ¿tu pareja o expareja ha hecho alguna de estas cosas contigo?",
+    "tipo": "multiselect",
+    "opciones": [
+      {
+        "valor": "insulto",
+        "etiqueta": "Me ha insultado, humillado o menospreciado delante de otras personas"
+      },
+      {
+        "valor": "amenaza",
+        "etiqueta": "Me ha amenazado o me ha dado miedo"
+      },
+      {
+        "valor": "aislamiento",
+        "etiqueta": "Me ha impedido ver a mi familia o amigos"
+      },
+      {
+        "valor": "control_economico",
+        "etiqueta": "Ha controlado o me ha quitado mi dinero o mis documentos"
+      },
+      {
+        "valor": "golpes",
+        "etiqueta": "Me ha golpeado, empujado o hecho daño físico"
+      },
+      {
+        "valor": "sexual_forzado",
+        "etiqueta": "Me ha obligado a tener relaciones sexuales sin que yo quisiera"
+      },
+      {
+        "valor": "ninguna",
+        "etiqueta": "Ninguna de las anteriores"
+      },
+      {
+        "valor": "no_aplica",
+        "etiqueta": "No tengo pareja actualmente / no aplica"
+      }
+    ],
+    "requerido": true,
+    "exclusivas": [
+      "ninguna",
+      "no_aplica"
+    ]
+  },
+  {
+    "id": "p05_familiar",
+    "eje": "1",
+    "numero": 5,
+    "texto": "¿Has vivido o vives situaciones de violencia en tu entorno familiar (fuera de tu pareja)?",
+    "tipo": "select",
+    "opciones": [
+      {
+        "valor": "si",
+        "etiqueta": "Sí"
+      },
+      {
+        "valor": "no",
+        "etiqueta": "No"
+      }
+    ],
+    "requerido": true
+  },
+  {
+    "id": "p05_tipo",
+    "eje": "1",
+    "numero": "5.1",
+    "texto": "¿De qué tipo?",
+    "tipo": "multiselect",
+    "opciones": [
+      {
+        "valor": "fisica",
+        "etiqueta": "Física"
+      },
+      {
+        "valor": "psicologica",
+        "etiqueta": "Psicológica"
+      },
+      {
+        "valor": "economica",
+        "etiqueta": "Económica"
+      },
+      {
+        "valor": "sexual",
+        "etiqueta": "Sexual"
+      },
+      {
+        "valor": "otra",
+        "etiqueta": "Otra"
+      }
+    ],
+    "requerido": true,
+    "condicion": {
+      "dependeDe": "p05_familiar",
+      "mostrarSi": [
+        "si"
+      ]
+    }
+  },
+  {
+    "id": "p06_laboral",
+    "eje": "1",
+    "numero": 6,
+    "texto": "¿Has vivido situaciones de violencia o acoso en tu entorno laboral o al buscar empleo?",
+    "tipo": "select",
+    "opciones": [
+      {
+        "valor": "si",
+        "etiqueta": "Sí"
+      },
+      {
+        "valor": "no",
+        "etiqueta": "No"
+      }
+    ],
+    "requerido": true
+  },
+  {
+    "id": "p07_comunidad",
+    "eje": "1",
+    "numero": 7,
+    "texto": "¿Has vivido situaciones de violencia en tu comunidad o durante tu proceso migratorio, si aplica?",
+    "tipo": "select",
+    "opciones": [
+      {
+        "valor": "si",
+        "etiqueta": "Sí"
+      },
+      {
+        "valor": "no",
+        "etiqueta": "No"
+      },
+      {
+        "valor": "no_aplica",
+        "etiqueta": "No aplica"
+      }
+    ],
+    "requerido": true
+  },
+  {
+    "id": "p08_convivencia",
+    "eje": "2",
+    "numero": 8,
+    "texto": "¿Cómo describirías la convivencia y el apoyo que recibes en tu entorno familiar?",
+    "tipo": "texto",
+    "requerido": false
+  },
+  {
+    "id": "p09_personas",
+    "eje": "2",
+    "numero": 9,
+    "texto": "¿Cuántas personas sientes que tienes cerca a quienes podrías pedirles ayuda si la necesitas?",
+    "tipo": "select",
+    "opciones": [
+      {
+        "valor": "ninguna",
+        "etiqueta": "Ninguna"
+      },
+      {
+        "valor": "1_2",
+        "etiqueta": "1 a 2 personas"
+      },
+      {
+        "valor": "3_mas",
+        "etiqueta": "3 o más personas"
+      }
+    ],
+    "requerido": true
+  },
+  {
+    "id": "p10_grupo",
+    "eje": "2",
+    "numero": 10,
+    "texto": "¿Participas en algún grupo, red comunitaria, religiosa o social que te brinde apoyo?",
+    "tipo": "select",
+    "opciones": [
+      {
+        "valor": "si",
+        "etiqueta": "Sí"
+      },
+      {
+        "valor": "no",
+        "etiqueta": "No"
+      }
+    ],
+    "requerido": true
+  },
+  {
+    "id": "p11_cuidado",
+    "eje": "2",
+    "numero": 11,
+    "texto": "¿Tienes responsabilidades de cuidado de niños/as, personas mayores o personas con discapacidad?",
+    "tipo": "select",
+    "opciones": [
+      {
+        "valor": "si",
+        "etiqueta": "Sí"
+      },
+      {
+        "valor": "no",
+        "etiqueta": "No"
+      }
+    ],
+    "requerido": true
+  },
+  {
+    "id": "p11_tipo",
+    "eje": "2",
+    "numero": "11.1",
+    "texto": "¿A quiénes cuidas?",
+    "tipo": "multiselect",
+    "opciones": [
+      {
+        "valor": "ninos",
+        "etiqueta": "Niños/as"
+      },
+      {
+        "valor": "mayores",
+        "etiqueta": "Personas mayores"
+      },
+      {
+        "valor": "discapacidad",
+        "etiqueta": "Personas con discapacidad"
+      },
+      {
+        "valor": "otro",
+        "etiqueta": "Otro"
+      }
+    ],
+    "requerido": true,
+    "condicion": {
+      "dependeDe": "p11_cuidado",
+      "mostrarSi": [
+        "si"
+      ]
+    }
+  },
+  {
+    "id": "p12_barrera",
+    "eje": "2",
+    "numero": 12,
+    "texto": "¿Estas responsabilidades han dificultado tu permanencia o asistencia laboral?",
+    "tipo": "select",
+    "opciones": [
+      {
+        "valor": "si",
+        "etiqueta": "Sí"
+      },
+      {
+        "valor": "no",
+        "etiqueta": "No"
+      },
+      {
+        "valor": "ocasiones",
+        "etiqueta": "En ocasiones"
+      }
+    ],
+    "requerido": true,
+    "condicion": {
+      "dependeDe": "p11_cuidado",
+      "mostrarSi": [
+        "si"
+      ]
+    }
+  },
+  {
+    "id": "p13_apoyo_cuidado",
+    "eje": "2",
+    "numero": 13,
+    "texto": "¿Cuentas con alguien que pueda apoyarte con el cuidado mientras trabajas o te formas?",
+    "tipo": "select",
+    "opciones": [
+      {
+        "valor": "si",
+        "etiqueta": "Sí"
+      },
+      {
+        "valor": "no",
+        "etiqueta": "No"
+      }
+    ],
+    "requerido": true,
+    "condicion": {
+      "dependeDe": "p11_cuidado",
+      "mostrarSi": [
+        "si"
+      ]
+    }
+  },
+  {
+    "id": "p14_emociones",
+    "eje": "3",
+    "numero": 14,
+    "texto": "En las últimas dos semanas, ¿cuáles de estas emociones has sentido con frecuencia?",
+    "tipo": "multiselect",
+    "opciones": [
+      {
+        "valor": "tristeza",
+        "etiqueta": "Tristeza"
+      },
+      {
+        "valor": "culpa",
+        "etiqueta": "Culpa"
+      },
+      {
+        "valor": "miedo",
+        "etiqueta": "Miedo"
+      },
+      {
+        "valor": "frustracion",
+        "etiqueta": "Frustración"
+      },
+      {
+        "valor": "rabia",
+        "etiqueta": "Rabia"
+      },
+      {
+        "valor": "soledad",
+        "etiqueta": "Soledad"
+      },
+      {
+        "valor": "humillacion",
+        "etiqueta": "Humillación"
+      },
+      {
+        "valor": "resentimiento",
+        "etiqueta": "Resentimiento"
+      },
+      {
+        "valor": "ansiedad",
+        "etiqueta": "Ansiedad"
+      },
+      {
+        "valor": "desesperanza",
+        "etiqueta": "Desesperanza"
+      },
+      {
+        "valor": "irritabilidad",
+        "etiqueta": "Irritabilidad"
+      },
+      {
+        "valor": "apatia",
+        "etiqueta": "Apatía / desgano"
+      },
+      {
+        "valor": "inseguridad",
+        "etiqueta": "Inseguridad"
+      },
+      {
+        "valor": "ninguna",
+        "etiqueta": "Ninguna de las anteriores, me he sentido bien"
+      }
+    ],
+    "requerido": true,
+    "exclusivas": [
+      "ninguna"
+    ]
+  },
+  {
+    "id": "p15_situaciones",
+    "eje": "3",
+    "numero": 15,
+    "texto": "¿Con cuáles de estas situaciones te identificas actualmente?",
+    "tipo": "multiselect",
+    "opciones": [
+      {
+        "valor": "motivar",
+        "etiqueta": "Me cuesta motivarme"
+      },
+      {
+        "valor": "no_valgo",
+        "etiqueta": "Siento que no valgo o no confío en mí misma"
+      },
+      {
+        "valor": "procrastino",
+        "etiqueta": "Dejo las cosas para después y no las termino"
+      },
+      {
+        "valor": "expresar",
+        "etiqueta": "Me cuesta expresar lo que siento"
+      },
+      {
+        "valor": "desconfio",
+        "etiqueta": "Desconfío de las personas a mi alrededor"
+      },
+      {
+        "valor": "otra",
+        "etiqueta": "Otra"
+      },
+      {
+        "valor": "ninguna",
+        "etiqueta": "Ninguna de las anteriores"
+      }
+    ],
+    "requerido": true,
+    "exclusivas": [
+      "ninguna"
+    ]
+  },
+  {
+    "id": "p15_otra",
+    "eje": "3",
+    "numero": "15.1",
+    "texto": "Otra situación, ¿cuál?",
+    "tipo": "texto",
+    "requerido": true,
+    "condicion": {
+      "dependeDe": "p15_situaciones",
+      "mostrarSiIncluye": [
+        "otra"
+      ]
+    }
+  },
+  {
+    "id": "p16_afrontamiento",
+    "eje": "3",
+    "numero": 16,
+    "texto": "Cuando te sientes así, ¿qué sueles hacer para sentirte mejor?",
+    "tipo": "multiselect",
+    "opciones": [
+      {
+        "valor": "hablar",
+        "etiqueta": "Hablar con alguien de confianza"
+      },
+      {
+        "valor": "actividad",
+        "etiqueta": "Hacer alguna actividad que me gusta (caminar, música, manualidades, etc.)"
+      },
+      {
+        "valor": "ayuda_profesional",
+        "etiqueta": "Buscar ayuda profesional"
+      },
+      {
+        "valor": "orar",
+        "etiqueta": "Orar o practicar mi espiritualidad"
+      },
+      {
+        "valor": "nada",
+        "etiqueta": "Prefiero no hacer nada / se me dificulta manejarlo"
+      },
+      {
+        "valor": "otra",
+        "etiqueta": "Otra"
+      }
+    ],
+    "requerido": true
+  },
+  {
+    "id": "p16_otra",
+    "eje": "3",
+    "numero": "16.1",
+    "texto": "Otra forma, ¿cuál?",
+    "tipo": "texto",
+    "requerido": true,
+    "condicion": {
+      "dependeDe": "p16_afrontamiento",
+      "mostrarSiIncluye": [
+        "otra"
+      ]
+    }
+  },
+  {
+    "id": "p17_alertas",
+    "eje": "3",
+    "numero": 17,
+    "texto": "Indicadores de alerta: ¿has vivido alguna de estas situaciones?",
+    "tipo": "multiselect",
+    "opciones": [
+      {
+        "valor": "pensamientos_dano",
+        "etiqueta": "En las últimas semanas he pensado que no vale la pena seguir, o he tenido ganas de hacerme daño"
+      },
+      {
+        "valor": "dormir",
+        "etiqueta": "He tenido dificultades importantes para dormir"
+      },
+      {
+        "valor": "consumo_descontrol",
+        "etiqueta": "He sentido que el consumo de alcohol u otras sustancias se me ha salido de las manos"
+      },
+      {
+        "valor": "perdida_control",
+        "etiqueta": "He sentido que pierdo el control de mis pensamientos o percibo cosas que otras personas no perciben"
+      },
+      {
+        "valor": "ninguna",
+        "etiqueta": "Ninguna de las anteriores"
+      },
+      {
+        "valor": "prefiero_no",
+        "etiqueta": "Prefiero no responder"
+      }
+    ],
+    "requerido": true,
+    "exclusivas": [
+      "ninguna",
+      "prefiero_no"
+    ],
+    "ayuda": "Si en este momento sientes que estás en riesgo, puedes llamar a la Línea 106, 155 o 123."
+  },
+  {
+    "id": "p18_decisiones",
+    "eje": "4",
+    "numero": 18,
+    "texto": "¿Sientes que puedes tomar tus propias decisiones sobre tu vida diaria (trabajo, estudio, salidas, tiempo libre)?",
+    "tipo": "select",
+    "opciones": [
+      {
+        "valor": "casi_siempre",
+        "etiqueta": "Sí, casi siempre"
+      },
+      {
+        "valor": "a_veces",
+        "etiqueta": "A veces"
+      },
+      {
+        "valor": "casi_nunca",
+        "etiqueta": "Casi nunca"
+      }
+    ],
+    "requerido": true
+  },
+  {
+    "id": "p19_dinero",
+    "eje": "4",
+    "numero": 19,
+    "texto": "¿Quién decide principalmente sobre el uso del dinero que ganas o recibes?",
+    "tipo": "select",
+    "opciones": [
+      {
+        "valor": "yo_sola",
+        "etiqueta": "Yo sola"
+      },
+      {
+        "valor": "conjunto",
+        "etiqueta": "En conjunto con alguien más"
+      },
+      {
+        "valor": "otra_persona",
+        "etiqueta": "Otra persona decide por mí"
+      }
+    ],
+    "requerido": true
+  },
+  {
+    "id": "p20_ahorro",
+    "eje": "4",
+    "numero": 20,
+    "texto": "¿Tienes una cuenta de ahorros, billetera digital o algún mecanismo propio para manejar tu dinero?",
+    "tipo": "select",
+    "opciones": [
+      {
+        "valor": "si",
+        "etiqueta": "Sí"
+      },
+      {
+        "valor": "no",
+        "etiqueta": "No"
+      }
+    ],
+    "requerido": true
+  },
+  {
+    "id": "p21_libertad_empleo",
+    "eje": "4",
+    "numero": 21,
+    "texto": "¿Sientes que tienes libertad para buscar o mantener un empleo sin que alguien te lo impida o dificulte?",
+    "tipo": "select",
+    "opciones": [
+      {
+        "valor": "si",
+        "etiqueta": "Sí"
+      },
+      {
+        "valor": "no",
+        "etiqueta": "No"
+      },
+      {
+        "valor": "a_veces",
+        "etiqueta": "A veces"
+      }
+    ],
+    "requerido": true
+  },
+  {
+    "id": "p22_control",
+    "eje": "4",
+    "numero": 22,
+    "texto": "¿Alguien controla, revisa o te impide el acceso a tu dinero, tu celular o tus documentos personales?",
+    "tipo": "select",
+    "opciones": [
+      {
+        "valor": "si",
+        "etiqueta": "Sí"
+      },
+      {
+        "valor": "no",
+        "etiqueta": "No"
+      }
+    ],
+    "requerido": true
+  },
+  {
+    "id": "p23_ingresos",
+    "eje": "4",
+    "numero": 23,
+    "texto": "¿Cuentas con fuentes de ingreso complementarias o apoyo familiar?",
+    "tipo": "select",
+    "opciones": [
+      {
+        "valor": "si",
+        "etiqueta": "Sí"
+      },
+      {
+        "valor": "no",
+        "etiqueta": "No"
+      }
+    ],
+    "requerido": true
+  },
+  {
+    "id": "p24_subsidio",
+    "eje": "4",
+    "numero": 24,
+    "texto": "¿Recibes actualmente algún subsidio o apoyo institucional?",
+    "tipo": "select",
+    "opciones": [
+      {
+        "valor": "si",
+        "etiqueta": "Sí"
+      },
+      {
+        "valor": "no",
+        "etiqueta": "No"
+      }
+    ],
+    "requerido": true
+  },
+  {
+    "id": "p24_cual",
+    "eje": "4",
+    "numero": "24.1",
+    "texto": "¿Cuál?",
+    "tipo": "texto",
+    "requerido": true,
+    "condicion": {
+      "dependeDe": "p24_subsidio",
+      "mostrarSi": [
+        "si"
+      ]
+    }
+  },
+  {
+    "id": "p25_vivienda",
+    "eje": "4",
+    "numero": 25,
+    "texto": "¿En tu vivienda actual existen condiciones de hacinamiento o insalubridad?",
+    "tipo": "select",
+    "opciones": [
+      {
+        "valor": "si",
+        "etiqueta": "Sí"
+      },
+      {
+        "valor": "no",
+        "etiqueta": "No"
+      },
+      {
+        "valor": "prefiero_no",
+        "etiqueta": "Prefiero no responder"
+      }
+    ],
+    "requerido": true
+  },
+  {
+    "id": "p26_barreras",
+    "eje": "5",
+    "numero": 26,
+    "texto": "Marca hasta 3 barreras que sientes que más te dificultan avanzar",
+    "tipo": "multiselect",
+    "opciones": [
+      {
+        "valor": "alimentacion_transporte",
+        "etiqueta": "Falta de recursos para alimentación o transporte"
+      },
+      {
+        "valor": "conocimientos",
+        "etiqueta": "Me faltan conocimientos específicos para las vacantes que me interesan"
+      },
+      {
+        "valor": "habilidades_vida",
+        "etiqueta": "Siento poco fortalecidas mis habilidades para la vida"
+      },
+      {
+        "valor": "cuidado",
+        "etiqueta": "Falta de apoyo para el cuidado de hijos/as u otras personas a cargo"
+      },
+      {
+        "valor": "validar_estudios",
+        "etiqueta": "Falta de recursos para validar mis estudios"
+      },
+      {
+        "valor": "convalidar_titulos",
+        "etiqueta": "Falta de recursos para convalidar títulos obtenidos en otro país"
+      },
+      {
+        "valor": "internet",
+        "etiqueta": "Acceso limitado a internet o herramientas tecnológicas"
+      },
+      {
+        "valor": "duelo_migratorio",
+        "etiqueta": "Estoy viviendo un proceso de duelo migratorio"
+      },
+      {
+        "valor": "riesgo_psicosocial",
+        "etiqueta": "Estoy viviendo una situación de riesgo psicosocial"
+      },
+      {
+        "valor": "juridico_migratorio",
+        "etiqueta": "Tengo procesos jurídicos por resolver relacionados con mi situación migratoria"
+      },
+      {
+        "valor": "calamidad",
+        "etiqueta": "Una calamidad doméstica reciente"
+      },
+      {
+        "valor": "miedo_entrevistas",
+        "etiqueta": "Miedo o inseguridad para buscar empleo o presentarme a entrevistas"
+      },
+      {
+        "valor": "otra",
+        "etiqueta": "Otra"
+      }
+    ],
+    "requerido": true,
+    "maxSeleccion": 3
+  },
+  {
+    "id": "p26_otra",
+    "eje": "5",
+    "numero": "26.1",
+    "texto": "Otra barrera, ¿cuál?",
+    "tipo": "texto",
+    "requerido": true,
+    "condicion": {
+      "dependeDe": "p26_barreras",
+      "mostrarSiIncluye": [
+        "otra"
+      ]
+    }
+  },
+  {
+    "id": "p27_exp_formal",
+    "eje": "5",
+    "numero": 27,
+    "texto": "¿Has trabajado antes en empresas formales?",
+    "tipo": "select",
+    "opciones": [
+      {
+        "valor": "si",
+        "etiqueta": "Sí"
+      },
+      {
+        "valor": "no",
+        "etiqueta": "No"
+      }
+    ],
+    "requerido": true
+  },
+  {
+    "id": "p27_factores",
+    "eje": "5",
+    "numero": "27.1",
+    "texto": "¿Qué factores dificultaron tu permanencia?",
+    "tipo": "select",
+    "opciones": [
+      {
+        "valor": "externos",
+        "etiqueta": "Factores externos"
+      },
+      {
+        "valor": "internos",
+        "etiqueta": "Factores internos"
+      },
+      {
+        "valor": "ambos",
+        "etiqueta": "Ambos"
+      },
+      {
+        "valor": "otro",
+        "etiqueta": "Otro"
+      }
+    ],
+    "requerido": true,
+    "condicion": {
+      "dependeDe": "p27_exp_formal",
+      "mostrarSi": [
+        "si"
+      ]
+    }
+  },
+  {
+    "id": "p28_fortalezas",
+    "eje": "F",
+    "numero": 28,
+    "texto": "De esta lista, marca las 2 o 3 que más te representen como fortalezas (máximo 3)",
+    "tipo": "multiselect",
+    "opciones": [
+      {
+        "valor": "agilidad",
+        "etiqueta": "Agilidad para ejecutar tareas"
+      },
+      {
+        "valor": "estres",
+        "etiqueta": "Manejo del estrés en el trabajo"
+      },
+      {
+        "valor": "responsabilidad",
+        "etiqueta": "Responsabilidad y cumplimiento"
+      },
+      {
+        "valor": "tiempo",
+        "etiqueta": "Buena gestión del tiempo"
+      },
+      {
+        "valor": "adaptacion",
+        "etiqueta": "Capacidad de adaptarme a cosas nuevas"
+      },
+      {
+        "valor": "equipo",
+        "etiqueta": "Trabajo en equipo"
+      },
+      {
+        "valor": "conflictos",
+        "etiqueta": "Resolver conflictos de forma constructiva"
+      },
+      {
+        "valor": "comunicacion",
+        "etiqueta": "Comunicación asertiva y escucha"
+      },
+      {
+        "valor": "liderazgo",
+        "etiqueta": "Liderazgo e iniciativa"
+      },
+      {
+        "valor": "proactividad",
+        "etiqueta": "Proactividad y disposición para aprender"
+      },
+      {
+        "valor": "compromiso",
+        "etiqueta": "Compromiso con lo que hago"
+      },
+      {
+        "valor": "motivacion",
+        "etiqueta": "Motivación para lograr metas"
+      }
+    ],
+    "requerido": true,
+    "maxSeleccion": 3
+  },
+  {
+    "id": "p29_fortalecer",
+    "eje": "F",
+    "numero": 29,
+    "texto": "¿Cuáles sientes que son 2 o 3 aspectos que te gustaría fortalecer? (máximo 3)",
+    "tipo": "multiselect",
+    "opciones": [
+      {
+        "valor": "procrastinacion",
+        "etiqueta": "Terminar lo que empiezo (procrastinación)"
+      },
+      {
+        "valor": "asertividad",
+        "etiqueta": "Comunicación asertiva"
+      },
+      {
+        "valor": "liderar",
+        "etiqueta": "Seguridad para liderar o decidir"
+      },
+      {
+        "valor": "pertenencia",
+        "etiqueta": "Sentido de pertenencia con la empresa o el equipo"
+      },
+      {
+        "valor": "motivacion",
+        "etiqueta": "Sostener mi motivación en el tiempo"
+      },
+      {
+        "valor": "compromisos",
+        "etiqueta": "Cumplir mis compromisos"
+      },
+      {
+        "valor": "cambios",
+        "etiqueta": "Adaptarme mejor a los cambios"
+      },
+      {
+        "valor": "conflictos",
+        "etiqueta": "Resolver conflictos con otras personas"
+      }
+    ],
+    "requerido": true,
+    "maxSeleccion": 3
+  },
+  {
+    "id": "p30_algo_mas",
+    "eje": "F",
+    "numero": 30,
+    "texto": "¿Hay algo más que quieras contarnos antes de tu llamada con la profesional?",
+    "tipo": "texto",
+    "requerido": false
+  }
+]
