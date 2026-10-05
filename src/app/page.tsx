@@ -71,7 +71,10 @@ export default function Home() {
         body: JSON.stringify({ respuestas, token }),
       });
       const data = await res.json();
-      if (!res.ok || !data.ok) throw new Error(data.error || "No se pudo enviar. Intenta de nuevo.");
+      if (!res.ok || !data.ok) {
+        const base = data.error || "No se pudo enviar. Intenta de nuevo.";
+        throw new Error(data.detalle ? `${base} [${data.detalle}]` : base);
+      }
       setVerLineasFinal(Boolean(data.mostrarLineasEmergencia));
       setPaso("enviado");
       window.scrollTo({ top: 0, behavior: "smooth" });

@@ -19,7 +19,12 @@ export async function POST(req: Request) {
     const envio = await enviarAZoho(token, limpias, diagnostico);
     if (!envio.ok) {
       console.error("enviarAZoho falló:", envio.error);
-      return NextResponse.json({ ok: false, error: "No pudimos guardar tus respuestas. Intenta de nuevo." }, { status: 502 });
+      // Solo para diagnóstico: con MOSTRAR_DETALLE_ERROR=1 se devuelve el código de Zoho (nunca respuestas).
+      const detalle = process.env.MOSTRAR_DETALLE_ERROR === "1" ? envio.error : undefined;
+      return NextResponse.json(
+        { ok: false, error: "No pudimos guardar tus respuestas. Intenta de nuevo.", detalle },
+        { status: 502 }
+      );
     }
 
     // A la participante NO se le devuelve puntaje ni nivel, solo si debe ver las líneas de apoyo.
