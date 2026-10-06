@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { EJES, esVisible, preguntasDeEje, preguntasFaltantes, type Respuestas } from "@/lib/preguntas";
 import PreguntaRenderer from "./PreguntaRenderer";
 import LineasApoyo from "./LineasApoyo";
@@ -10,6 +10,15 @@ const ORDEN: Paso[] = ["intro", "A", "1", "2", "3", "4", "5", "F", "enviado"];
 
 // Página neutra a la que se redirige con el botón "Salir"
 const URL_SALIDA = process.env.NEXT_PUBLIC_URL_SALIDA || "https://www.google.com";
+
+type Acceso = "cargando" | "ok" | "enlace_invalido" | "enlace_vencido" | "enlace_usado" | "error";
+
+const MENSAJE_ACCESO: Record<Exclude<Acceso, "cargando" | "ok">, string> = {
+  enlace_invalido: "Este enlace no es válido. Solicita uno nuevo a tu orientadora.",
+  enlace_vencido: "Este enlace venció. Solicita uno nuevo a tu orientadora.",
+  enlace_usado: "Ya recibimos tus respuestas con este enlace. Gracias. Si necesitas cambiar algo, habla con tu orientadora.",
+  error: "No pudimos verificar tu enlace. Intenta de nuevo en unos minutos.",
+};
 
 const OPCIONES_ALERTA_P17 = ["pensamientos_dano", "dormir", "consumo_descontrol", "perdida_control"];
 
@@ -21,6 +30,16 @@ export default function Home() {
   const [error, setError] = useState<string | null>(null);
   const [faltantes, setFaltantes] = useState<string[]>([]);
   const [verLineasFinal, setVerLineasFinal] = useState(false);
+  const [acceso, setAcceso] = useState<Acceso>("cargando");
+
+  // Al abrir: el servidor valida firma, vencimiento y que el enlace no se haya usado
+  useEffect(() => {
+    const t = new URLSearchParams(window.location.search).get("t") || "";
+    fetch(`/api/sesion?t=${encodeURIComponent(t)}`, { cache: "no-store" })
+      .then((r) => r.json())
+      .then((d) => setAcceso(d.estado === "ok" || d.estado === "libre" ? "ok" : (d.estado as Acceso)))
+      .catch(() => setAcceso("error"));
+  }, []);
 
   function salir() {
     // Nada se guarda en el navegador (solo estado en memoria); replace() evita dejar esta página en el historial
@@ -71,6 +90,10 @@ export default function Home() {
         body: JSON.stringify({ respuestas, token }),
       });
       const data = await res.json();
+      if (data.enlace) {
+        setAcceso(data.enlace as Acceso);
+        return;
+      }
       if (!res.ok || !data.ok) {
         const base = data.error || "No se pudo enviar. Intenta de nuevo.";
         throw new Error(data.detalle ? `${base} [${data.detalle}]` : base);
@@ -126,7 +149,16 @@ export default function Home() {
       </header>
 
       <main className="mx-auto max-w-4xl px-4 py-8 sm:px-6">
-        {paso === "intro" && (
+        {acceso === "cargando" && <p className="text-base text-[var(--color-grafito)]/70">Cargando…</p>}
+
+        {acceso !== "cargando" && acceso !== "ok" && (
+          <div className="space-y-4">
+            <h1 className="font-[family-name:var(--font-display)] text-3xl font-bold text-[var(--color-azul)]">Diagnóstico psicosocial</h1>
+            <p className="text-[17px] leading-relaxed">{MENSAJE_ACCESO[acceso]}</p>
+          </div>
+        )}
+
+        {acceso === "ok" && paso === "intro" && (
           <div className="space-y-6">
             <h1 className="font-[family-name:var(--font-display)] text-4xl font-bold leading-tight text-[var(--color-azul)]">
               Diagnóstico psicosocial
@@ -161,7 +193,7 @@ export default function Home() {
           </div>
         )}
 
-        {esPasoEje && (
+        {acceso === "ok" && esPasoEje && (
           <div>
             <p className="mb-1 text-sm font-semibold uppercase tracking-wide text-[var(--color-azul)]/70">
               Sección {indice + 1} de {EJES.length}
@@ -201,7 +233,7 @@ export default function Home() {
           </div>
         )}
 
-        {paso === "enviado" && (
+        {acceso === "ok" && paso === "enviado" && (
           <div className="space-y-6">
             <h2 className="font-[family-name:var(--font-display)] text-3xl font-bold text-[var(--color-azul)]">Gracias por compartir esta información</h2>
             <p className="text-[17px] leading-relaxed">

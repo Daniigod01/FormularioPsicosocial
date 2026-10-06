@@ -12,8 +12,10 @@ módulo «Información Psicosocial». Base: el proyecto del formulario de empres
 | Interfaz: consentimiento, aviso de seguridad, botón Salir, líneas 106/155/123, pasos, cierre | ✅ |
 | `POST /api/enviar`: calcula en el servidor, no devuelve puntaje a la participante | ✅ |
 | Mapeo formulario → campos de Zoho (`src/lib/zoho-campos.ts`, generado de los metadatos reales) | ✅ 17 pruebas (`npm run test:zoho`) |
-| Envío a Zoho (`src/lib/zoho.ts`: OAuth + creación del registro) | 🟡 Armado y probado el payload; **la llamada real a Zoho no se ha probado** |
-| Enlace único firmado `?t=` (verificación en servidor, ver `docs/enlace-unico.md`) | ✅ verificación · ⏳ generar el enlace desde Zoho |
+| Envío a Zoho: crear registro (sin enlace, solo pruebas) | ✅ probado contra Zoho real |
+| Enlace único con vencimiento: `/api/enlace` (lo llama Zoho), `/api/sesion` (valida al abrir), `/api/enviar` (ACTUALIZA el registro, un solo uso) | ✅ 33 pruebas con Zoho simulado · ⏳ falta probarlo con Zoho real |
+| Campo «Enlace del formulario» en Zoho | ✅ creado |
+| Botón «Generar enlace de diagnóstico» (guarda el enlace en ese campo; la orientadora lo copia) | ⏳ código en `docs/zoho-botones.md`, sin probar en el CRM |
 | Mostrar datos prellenados (nombre, documento…) dentro del formulario | ⏳ |
 | Radar, PDFs, llamadas 1 y 2 en Zoho | ⏳ Pasos 6 en adelante |
 

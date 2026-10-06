@@ -304,3 +304,5 @@ export const VALOR_BANDERA: Record<string, string> = {
 
 export const ESTADO_DILIGENCIADO = "Diligenciado";
 export const FUENTE_AUTOAPLICADO = "Autoaplicado en línea";
+
+export const ESTADO_ENLACE_ENVIADO = "Enlace enviado";

@@ -1,42 +1,68 @@
 /**
- * Envío del diagnóstico al CRM Zoho (módulo «Psicosocial RutaM v2»).
- * - construirRegistro(): función pura que arma el JSON (probada en scripts/test-zoho.ts).
- * - enviarAZoho(): obtiene el access token (refresh token) y crea el registro.
- *   Esta parte NO se ha probado contra Zoho real: requiere las variables ZOHO_* (ver .env.example).
+ * Integración con Zoho CRM (módulo «Psicosocial RutaM v2»).
+ *
+ * Flujo con enlace único (opción B):
+ *  1. Zoho crea el registro (estado «Enlace enviado») y pide un enlace a /api/enlace.
+ *  2. La participante abre el enlace: /api/sesion valida firma, vencimiento y estado.
+ *  3. Al enviar, /api/enviar ACTUALIZA ese mismo registro (estado «Diligenciado»).
+ *
+ * La parte que habla con Zoho se prueba con un fetch simulado (scripts/test-zoho.ts);
+ * contra Zoho real solo se ha probado la creación del registro.
  */
 import { createHmac, timingSafeEqual } from "crypto";
 import { PREGUNTAS, type Respuestas } from "./preguntas";
 import type { Diagnostico } from "./puntaje";
 import {
-  CAMPO_PREGUNTA, CAMPO_RESULTADO, ESTADO_DILIGENCIADO, FUENTE_AUTOAPLICADO,
+  CAMPO_PREGUNTA, CAMPO_RESULTADO, ESTADO_DILIGENCIADO, ESTADO_ENLACE_ENVIADO, FUENTE_AUTOAPLICADO,
   MODULO_ZOHO, VALOR_BANDERA, VALOR_OPCION,
 } from "./zoho-campos";
 
-export type ResultadoEnvio = { ok: true; modoPrueba?: boolean; id?: string } | { ok: false; error: string };
+export type ResultadoEnvio =
+  | { ok: true; modoPrueba?: boolean; id?: string }
+  | { ok: false; error: string; enlace?: EstadoEnlace };
 
-// ---------- Enlace único: token = <idRegistroParticipante>.<hmac-sha256 hex> ----------
-export function firmarToken(idParticipante: string, secreto: string): string {
-  return `${idParticipante}.${createHmac("sha256", secreto).update(idParticipante).digest("hex")}`;
+export type EstadoEnlace = "enlace_invalido" | "enlace_vencido" | "enlace_usado";
+export type EstadoSesion = "ok" | "libre" | EstadoEnlace | "error";
+
+// ---------- Enlace único: token = <idRegistro>.<vence (segundos unix)>.<hmac-sha256 hex> ----------
+const firmar = (id: string, vence: number, secreto: string) =>
+  createHmac("sha256", secreto).update(`${id}.${vence}`).digest("hex");
+
+export function firmarToken(idRegistro: string, secreto: string, dias = 7, ahora: Date = new Date()): { token: string; vence: Date } {
+  const venceSeg = Math.floor(ahora.getTime() / 1000) + Math.round(dias * 86400);
+  return { token: `${idRegistro}.${venceSeg}.${firmar(idRegistro, venceSeg, secreto)}`, vence: new Date(venceSeg * 1000) };
 }
 
-/** Devuelve el id del registro de la participante si la firma es válida; si no, null. */
-export function verificarToken(token: string | null, secreto: string | undefined): string | null {
-  if (!token || !secreto) return null;
-  const i = token.lastIndexOf(".");
-  if (i < 1) return null;
-  const id = token.slice(0, i);
-  if (!/^\d{5,25}$/.test(id)) return null;
-  const esperado = Buffer.from(createHmac("sha256", secreto).update(id).digest("hex"));
-  const recibido = Buffer.from(token.slice(i + 1));
-  return esperado.length === recibido.length && timingSafeEqual(esperado, recibido) ? id : null;
+export function verificarToken(
+  token: string | null,
+  secreto: string | undefined,
+  ahora: Date = new Date()
+): { ok: true; id: string } | { ok: false; motivo: "enlace_invalido" | "enlace_vencido" } {
+  const invalido = { ok: false, motivo: "enlace_invalido" } as const;
+  if (!token || !secreto) return invalido;
+  const partes = token.split(".");
+  if (partes.length !== 3) return invalido;
+  const [id, venceTxt, sig] = partes;
+  if (!/^\d{5,25}$/.test(id) || !/^\d{9,12}$/.test(venceTxt)) return invalido;
+  const esperado = Buffer.from(firmar(id, Number(venceTxt), secreto));
+  const recibido = Buffer.from(sig);
+  if (esperado.length !== recibido.length || !timingSafeEqual(esperado, recibido)) return invalido;
+  if (Number(venceTxt) * 1000 < ahora.getTime()) return { ok: false, motivo: "enlace_vencido" };
+  return { ok: true, id };
+}
+
+/** El enlace solo sirve mientras el registro siga en «Enlace enviado». */
+export function evaluarEstado(estado: string | null | undefined): "ok" | "enlace_usado" {
+  return estado === ESTADO_ENLACE_ENVIADO ? "ok" : "enlace_usado";
 }
 
 // ---------- Armado del registro ----------
+/** `crear`=true agrega el nombre (registro nuevo); al actualizar no se toca el nombre ni la participante. */
 export function construirRegistro(
   respuestas: Respuestas,
   dx: Diagnostico,
-  idParticipante: string | null,
-  ahora: Date = new Date()
+  ahora: Date = new Date(),
+  crear = false
 ): Record<string, unknown> {
   const r: Record<string, unknown> = {};
 
@@ -67,13 +93,13 @@ export function construirRegistro(
   r[C.alertaNaranja] = dx.alertaNaranjaControlEconomico;
   r[C.estado] = ESTADO_DILIGENCIADO;
   r[C.fuente] = FUENTE_AUTOAPLICADO;
-  r[C.nombre] = `Diagnóstico psicosocial ${ahora.toISOString().slice(0, 16).replace("T", " ")}`;
-  if (idParticipante) r[C.participante] = { id: idParticipante };
+  if (crear) r[C.nombre] = `Diagnóstico psicosocial ${ahora.toISOString().slice(0, 16).replace("T", " ")}`;
   return r;
 }
 
-// ---------- Llamada a la API de Zoho ----------
+// ---------- Llamadas a la API de Zoho ----------
 const cache = globalThis as unknown as { __zohoToken?: { valor: string; vence: number } };
+const apiBase = () => process.env.ZOHO_API_DOMAIN || "https://www.zohoapis.com";
 
 async function obtenerAccessToken(): Promise<string> {
   const c = cache.__zohoToken;
@@ -95,31 +121,66 @@ async function obtenerAccessToken(): Promise<string> {
   return data.access_token;
 }
 
-export async function enviarAZoho(
-  token: string | null,
-  respuestas: Respuestas,
-  diagnostico: Diagnostico
-): Promise<ResultadoEnvio> {
-  if (!process.env.ZOHO_REFRESH_TOKEN) {
-    // Modo prueba: no se guarda nada ni se escribe contenido sensible en los logs
-    return { ok: true, modoPrueba: true };
-  }
+async function zoho(metodo: "GET" | "POST" | "PUT", ruta: string, cuerpo?: unknown) {
+  const res = await fetch(`${apiBase()}/crm/v8/${ruta}`, {
+    method: metodo,
+    headers: { Authorization: `Zoho-oauthtoken ${await obtenerAccessToken()}`, "Content-Type": "application/json" },
+    body: cuerpo ? JSON.stringify(cuerpo) : undefined,
+  });
+  const data = await res.json().catch(() => ({}));
+  return { res, data };
+}
+
+export const modoPrueba = () => !process.env.ZOHO_REFRESH_TOKEN;
+export const permitirSinEnlace = () => process.env.PERMITIR_SIN_ENLACE === "1";
+
+/** Estado actual del registro («Enlace enviado», «Diligenciado»…). null si no existe. */
+export async function leerEstadoRegistro(id: string): Promise<string | null> {
+  const { res, data } = await zoho("GET", `${MODULO_ZOHO}/${id}?fields=${CAMPO_RESULTADO.estado}`);
+  if (!res.ok) return null;
+  return data?.data?.[0]?.[CAMPO_RESULTADO.estado] ?? null;
+}
+
+/** Qué debe mostrar el formulario al abrirse. */
+export async function estadoDeSesion(token: string | null): Promise<EstadoSesion> {
+  if (modoPrueba()) return "libre";
+  if (!token) return permitirSinEnlace() ? "libre" : "enlace_invalido";
+  const v = verificarToken(token, process.env.ZOHO_LINK_SECRET);
+  if (!v.ok) return v.motivo;
   try {
-    const idParticipante = verificarToken(token, process.env.ZOHO_LINK_SECRET);
-    const registro = construirRegistro(respuestas, diagnostico, idParticipante);
-    const api = process.env.ZOHO_API_DOMAIN || "https://www.zohoapis.com";
-    const res = await fetch(`${api}/crm/v8/${MODULO_ZOHO}`, {
-      method: "POST",
-      headers: { Authorization: `Zoho-oauthtoken ${await obtenerAccessToken()}`, "Content-Type": "application/json" },
-      body: JSON.stringify({ data: [registro] }),
-    });
-    const data = await res.json();
-    const fila = data?.data?.[0];
-    if (!res.ok || fila?.code !== "SUCCESS") {
-      // Solo código y campo: nunca se registran las respuestas
-      return { ok: false, error: `Zoho rechazó el registro: ${fila?.code ?? res.status} ${fila?.details?.api_name ?? ""}`.trim() };
+    const estado = await leerEstadoRegistro(v.id);
+    if (estado === null) return "enlace_invalido";
+    return evaluarEstado(estado);
+  } catch {
+    return "error";
+  }
+}
+
+export async function enviarAZoho(token: string | null, respuestas: Respuestas, dx: Diagnostico): Promise<ResultadoEnvio> {
+  if (modoPrueba()) return { ok: true, modoPrueba: true }; // no se guarda nada
+
+  try {
+    // ---- Sin enlace: solo para pruebas (PERMITIR_SIN_ENLACE=1), crea un registro nuevo ----
+    if (!token) {
+      if (!permitirSinEnlace()) return { ok: false, error: "Falta el enlace.", enlace: "enlace_invalido" };
+      const { res, data } = await zoho("POST", MODULO_ZOHO, { data: [construirRegistro(respuestas, dx, new Date(), true)] });
+      const fila = data?.data?.[0];
+      if (!res.ok || fila?.code !== "SUCCESS") return { ok: false, error: `Zoho rechazó el registro: ${fila?.code ?? res.status} ${fila?.details?.api_name ?? ""}`.trim() };
+      return { ok: true, id: fila.details?.id };
     }
-    return { ok: true, id: fila.details?.id };
+
+    // ---- Con enlace: se valida y se ACTUALIZA el registro que creó el botón de Zoho ----
+    const v = verificarToken(token, process.env.ZOHO_LINK_SECRET);
+    if (!v.ok) return { ok: false, error: v.motivo, enlace: v.motivo };
+    const estado = await leerEstadoRegistro(v.id);
+    if (estado === null) return { ok: false, error: "Registro no encontrado.", enlace: "enlace_invalido" };
+    if (evaluarEstado(estado) !== "ok") return { ok: false, error: "Enlace ya usado.", enlace: "enlace_usado" };
+
+    const { res, data } = await zoho("PUT", `${MODULO_ZOHO}/${v.id}`, { data: [construirRegistro(respuestas, dx)] });
+    const fila = data?.data?.[0];
+    // Solo código y campo: nunca se registran las respuestas
+    if (!res.ok || fila?.code !== "SUCCESS") return { ok: false, error: `Zoho rechazó la actualización: ${fila?.code ?? res.status} ${fila?.details?.api_name ?? ""}`.trim() };
+    return { ok: true, id: v.id };
   } catch (e) {
     return { ok: false, error: e instanceof Error ? e.message : String(e) };
   }
