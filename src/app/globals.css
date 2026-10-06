@@ -6,6 +6,7 @@
   --color-amarillo: #ffd30f;  /* Amarillo Colsubsidio */
   --color-grafito: #2b2b2b;   /* Grafito: tipografía */
   --color-blanco: #ffffff;    /* Blanco: fondos */
+  --color-fondo: #caf0f8;     /* Celeste: fondo de las pantallas del formulario */
 
   /* Tintas al 20 % permitidas por el manual (nunca se añaden tonos nuevos) */
   --color-azul-20: #ccd2de;
@@ -26,7 +27,7 @@ html,
 body {
   padding: 0;
   margin: 0;
-  background: var(--color-blanco);
+  background: var(--color-fondo);
   color: var(--color-grafito);
   font-family: var(--font-body);
   font-size: 16px;

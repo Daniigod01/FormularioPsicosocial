@@ -12,7 +12,7 @@ function Etiqueta({ p }: { p: Pregunta }) {
         {p.requerido && <span className="ml-1 font-bold text-[var(--color-azul)]">*</span>}
       </label>
       {p.maxSeleccion && (
-        <p className="mt-1 text-sm text-[var(--color-grafito)]/70">Puedes marcar máximo {p.maxSeleccion} opciones.</p>
+        <p className="mt-1 text-sm text-[var(--color-grafito)]">Puedes marcar máximo {p.maxSeleccion} opciones.</p>
       )}
     </div>
   );

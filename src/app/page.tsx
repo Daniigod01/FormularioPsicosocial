@@ -121,8 +121,8 @@ export default function Home() {
     "rounded-full border-2 border-[var(--color-azul)] px-8 py-3 text-base font-semibold text-[var(--color-azul)] transition-colors hover:bg-[var(--color-azul-20)]";
 
   return (
-    <div className="min-h-screen bg-white">
-      <header className="sticky top-0 z-20 border-b-4 border-[var(--color-amarillo)] bg-white">
+    <div className="min-h-screen bg-[var(--color-fondo)]">
+      <header className="sticky top-0 z-20 border-b-4 border-[var(--color-azul)] bg-white">
         <div className="mx-auto flex max-w-4xl items-center justify-between gap-3 px-4 py-3 sm:px-6">
           <div className="flex items-center gap-4">
             {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -142,14 +142,14 @@ export default function Home() {
           )}
         </div>
         {esPasoEje && (
-          <div className="h-2 bg-[var(--color-azul-20)]">
+          <div className="h-2 bg-white">
             <div className="h-full bg-[var(--color-azul)] transition-all" style={{ width: `${pct}%` }} />
           </div>
         )}
       </header>
 
       <main className="mx-auto max-w-4xl px-4 py-8 sm:px-6">
-        {acceso === "cargando" && <p className="text-base text-[var(--color-grafito)]/70">Cargando…</p>}
+        {acceso === "cargando" && <p className="text-base text-[var(--color-grafito)]">Cargando…</p>}
 
         {acceso !== "cargando" && acceso !== "ok" && (
           <div className="space-y-4">
@@ -195,7 +195,7 @@ export default function Home() {
 
         {acceso === "ok" && esPasoEje && (
           <div>
-            <p className="mb-1 text-sm font-semibold uppercase tracking-wide text-[var(--color-azul)]/70">
+            <p className="mb-1 text-sm font-semibold uppercase tracking-wide text-[var(--color-azul)]">
               Sección {indice + 1} de {EJES.length}
             </p>
             <h2 className="mb-6 font-[family-name:var(--font-display)] text-3xl font-bold text-[var(--color-azul)]">
@@ -240,7 +240,7 @@ export default function Home() {
               Una profesional la revisará y te llamará en los próximos días para construir juntas tu plan de trabajo.
             </p>
             {verLineasFinal && <LineasApoyo destacado />}
-            <p className="text-sm text-[var(--color-grafito)]/70">Ya puedes cerrar esta página.</p>
+            <p className="text-sm text-[var(--color-grafito)]">Ya puedes cerrar esta página.</p>
           </div>
         )}
       </main>

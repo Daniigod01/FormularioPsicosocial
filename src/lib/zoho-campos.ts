@@ -269,7 +269,7 @@ export const VALOR_OPCION: Record<string, Record<string, string>> = {
 /** Campos de resultado, estado y metadatos */
 export const CAMPO_RESULTADO = {
   "nombre": "Name",
-  "participante": "Participante",
+  "participante": "Participante_RutaM",
   "estado": "Estado_del_diagn_stico",
   "fuente": "Fuente_del_diagn_stico",
   "nivel": "Nivel_de_riesgo_autom_tico",
