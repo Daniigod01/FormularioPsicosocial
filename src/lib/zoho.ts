@@ -57,6 +57,11 @@ export function evaluarEstado(estado: string | null | undefined): "ok" | "enlace
 }
 
 // ---------- Armado del registro ----------
+/** Fecha (AAAA-MM-DD) en hora de Colombia: el servidor corre en UTC y de noche cambiaría el día. */
+export function fechaBogota(d: Date): string {
+  return new Intl.DateTimeFormat("en-CA", { timeZone: "America/Bogota", year: "numeric", month: "2-digit", day: "2-digit" }).format(d);
+}
+
 /** `crear`=true agrega el nombre (registro nuevo); al actualizar no se toca el nombre ni la participante. */
 export function construirRegistro(
   respuestas: Respuestas,
@@ -93,6 +98,7 @@ export function construirRegistro(
   r[C.alertaNaranja] = dx.alertaNaranjaControlEconomico;
   r[C.estado] = ESTADO_DILIGENCIADO;
   r[C.fuente] = FUENTE_AUTOAPLICADO;
+  r[C.fechaDiligenciamiento] = fechaBogota(ahora);
   if (crear) r[C.nombre] = `Diagnóstico psicosocial ${ahora.toISOString().slice(0, 16).replace("T", " ")}`;
   return r;
 }

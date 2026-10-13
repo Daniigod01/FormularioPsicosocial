@@ -270,6 +270,8 @@ export const VALOR_OPCION: Record<string, Record<string, string>> = {
 export const CAMPO_RESULTADO = {
   "nombre": "Name",
   "participante": "Participante_RutaM",
+  // OJO: el campo con etiqueta «Fecha de diligenciamiento» tiene nombre API ...1; el de etiqueta «Fecha de envio» es Fecha_de_diligenciamiento
+  "fechaDiligenciamiento": "Fecha_de_diligenciamiento1",
   "estado": "Estado_del_diagn_stico",
   "fuente": "Fuente_del_diagn_stico",
   "nivel": "Nivel_de_riesgo_autom_tico",

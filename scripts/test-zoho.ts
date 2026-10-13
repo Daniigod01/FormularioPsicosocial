@@ -1,6 +1,6 @@
 import { PREGUNTAS } from "../src/lib/preguntas";
 import { calcularDiagnostico } from "../src/lib/puntaje";
-import { construirRegistro, enviarAZoho, estadoDeSesion, evaluarEstado, firmarToken, verificarToken } from "../src/lib/zoho";
+import { construirRegistro, enviarAZoho, estadoDeSesion, evaluarEstado, fechaBogota, firmarToken, verificarToken } from "../src/lib/zoho";
 import { CAMPO_PREGUNTA, VALOR_OPCION } from "../src/lib/zoho-campos";
 
 let ok = 0, fail = 0;
@@ -28,6 +28,10 @@ t("nivel Alto, banderas y alertas", upd["Nivel_de_riesgo_autom_tico"] === "Alto"
 t("al ACTUALIZAR no toca Name ni Participante", !("Name" in upd) && !("Participante" in upd));
 t("al CREAR sí pone Name", (nuevo["Name"] as string).startsWith("Diagnóstico psicosocial 2026-10-05"));
 t("estado queda Diligenciado", upd["Estado_del_diagn_stico"] === "Diligenciado");
+t("fecha de diligenciamiento = 2026-10-05 (campo ...1)", upd["Fecha_de_diligenciamiento1"] === "2026-10-05", upd["Fecha_de_diligenciamiento1"]);
+t("NO toca la fecha de envío (la pone Zoho)", !("Fecha_de_diligenciamiento" in upd));
+t("fecha en hora de Colombia: 03:00 UTC del 6 = noche del 5", fechaBogota(new Date("2026-10-06T03:00:00Z")) === "2026-10-05");
+t("fecha en hora de Colombia: 06:00 UTC del 6 = día 6", fechaBogota(new Date("2026-10-06T06:00:00Z")) === "2026-10-06");
 
 console.log("Token del enlace único (con vencimiento)");
 const ID = "6174744000107001007", SEC = "secreto-de-prueba";

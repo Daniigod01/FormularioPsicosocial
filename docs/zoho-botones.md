@@ -35,39 +35,82 @@ Nombre: `generarEnlaceDiagnostico` · Categoría: **Botón** · Parámetro: `par
 ```deluge
 string button.generarEnlaceDiagnostico(string participanteId)
 {
-  idPart = participanteId.toLong();
-  p = zoho.crm.getRecordById("Orientaci_n_Colsubsidios", idPart);
-  nombre = ifnull(p.get("Name"), "");  // en Orientación RutaM el nombre del registro es el número de documento
+  mensaje = "";
+  try
+  {
+    if(participanteId == null || participanteId == "")
+    {
+      mensaje = "PASO 0: el parámetro participanteId llegó VACÍO. Revisa que en el botón esté asignado al ID de registro.";
+    }
+    else
+    {
+      idPart = participanteId.toLong();
+      p = zoho.crm.getRecordById("Orientaci_n_Colsubsidios", idPart);
+      if(p == null || p.get("Name") == null)
+      {
+        mensaje = "PASO 0: no se encontró la participante. participanteId=" + participanteId + " respuesta=" + p;
+      }
+      else
+      {
+        documento = p.get("Name");
+        celular = p.get("N_mero_de_celular_Principal");
+        correo = p.get("Email");
 
-  // 1) Registro psicosocial en estado «Enlace enviado», ligado a la participante
-  reg = Map();
-  reg.put("Name", nombre);
-  reg.put("Participante_RutaM", {"id": idPart});
-  reg.put("Estado_del_diagn_stico", "Enlace enviado");
-  creado = zoho.crm.createRecord("Psicosocial_RutaM_v2", reg);
-  idReg = creado.get("id");
-
-  // 2) Pedir el enlace firmado al formulario
-  cuerpo = Map();
-  cuerpo.put("id", idReg.toString());
-  cab = Map();
-  cab.put("x-api-key", zoho.crm.getOrgVariable("clave_enlace"));
-  cab.put("Content-Type", "application/json");
-  resp = invokeurl
-  [
-    url : zoho.crm.getOrgVariable("url_formulario") + "/api/enlace"
-    type : POST
-    parameters : cuerpo.toString()
-    headers : cab
-  ];
-  enlace = resp.get("url");
-
-  // 3) Guardar el enlace en el campo para que la orientadora lo copie
-  cambios = Map();
-  cambios.put("Enlace_del_formulario", enlace);
-  zoho.crm.updateRecord("Psicosocial_RutaM_v2", idReg.toLong(), cambios);
-
-  return "Enlace generado. Búscalo en el registro psicosocial de esta participante, campo «Enlace del formulario», y envíaselo.";
+        reg = Map();
+        reg.put("Name", documento);
+        reg.put("Participante_RutaM", {"id": idPart});
+        reg.put("Estado_del_diagn_stico", "Enlace enviado");
+        // OJO: «Fecha de envio» tiene nombre API Fecha_de_diligenciamiento (la etiqueta se cambió después)
+        reg.put("Fecha_de_diligenciamiento", zoho.currentdate.toString("yyyy-MM-dd"));
+        if(celular != null && celular != "")
+        {
+          reg.put("N_mero_de_tel_fono", celular);
+        }
+        if(correo != null && correo != "")
+        {
+          reg.put("Email", correo);
+        }
+        creado = zoho.crm.createRecord("Psicosocial_RutaM_v2", reg);
+        idReg = creado.get("id");
+        if(idReg == null)
+        {
+          mensaje = "PASO 1: no se creó el registro psicosocial. Respuesta de Zoho: " + creado;
+        }
+        else
+        {
+          cuerpo = Map();
+          cuerpo.put("id", idReg.toString());
+          cab = Map();
+          cab.put("x-api-key", zoho.crm.getOrgVariable("clave_enlace"));
+          cab.put("Content-Type", "application/json");
+          resp = invokeurl
+          [
+            url : zoho.crm.getOrgVariable("url_formulario") + "/api/enlace"
+            type : POST
+            parameters : cuerpo.toString()
+            headers : cab
+          ];
+          enlace = resp.get("url");
+          if(enlace == null)
+          {
+            mensaje = "PASO 2: el formulario no devolvió enlace. Respuesta: " + resp;
+          }
+          else
+          {
+            cambios = Map();
+            cambios.put("Enlace_del_formulario", enlace);
+            actualizado = zoho.crm.updateRecord("Psicosocial_RutaM_v2", idReg.toLong(), cambios);
+            mensaje = "Enlace generado. Búscalo en el registro psicosocial de esta participante, campo Enlace del formulario.";
+          }
+        }
+      }
+    }
+  }
+  catch (e)
+  {
+    mensaje = "ERROR INESPERADO: " + e;
+  }
+  return mensaje;
 }
 ```
 
@@ -99,3 +142,13 @@ string button.generarEnlaceDiagnostico(string participanteId)
 - El botón vive en **Orientación RutaM** (`Orientaci_n_Colsubsidios`): ahí están las participantes (el nombre del registro es el número de documento).
 - El diagnóstico se liga con el campo **Participante RutaM** (`Participante_RutaM`).
 - El campo viejo «Participante» apunta a **Orientador RutaM** (otro módulo) y ya no se usa; se puede eliminar.
+
+## Campos de fecha y de contacto
+| Campo en Zoho (etiqueta) | Nombre API | Quién lo llena | Cuándo |
+|---|---|---|---|
+| Fecha de envio | `Fecha_de_diligenciamiento` | La función del botón | Al generar el enlace |
+| Fecha de diligenciamiento | `Fecha_de_diligenciamiento1` | El servidor del formulario | Cuando la participante envía (hora de Colombia) |
+| Número de teléfono | `N_mero_de_tel_fono` | La función del botón | Copia `N_mero_de_celular_Principal` de Orientación RutaM |
+| Correo electrónico | `Email` | La función del botón | Copia `Email` de Orientación RutaM |
+
+> **Cuidado con los nombres API:** «Fecha de envio» lleva el nombre `Fecha_de_diligenciamiento` y «Fecha de diligenciamiento» lleva `Fecha_de_diligenciamiento1`. Zoho no cambia el nombre API al renombrar la etiqueta.
