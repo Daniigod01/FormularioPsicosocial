@@ -22,6 +22,8 @@ const CAMPO_CORREO = "Email";
 
 export const CAMPOS = {
   documento: CAMPO_RESULTADO.nombre, // «Name» = número de documento
+  /** «Nombre completo»: lo copia la función del botón al crear el enlace (desde Orientación RutaM). */
+  nombreCompleto: "Nombre_completo",
   participante: CAMPO_RESULTADO.participante, // búsqueda a Orientación RutaM
   estado: CAMPO_RESULTADO.estado,
   fechaDiligenciamiento: CAMPO_RESULTADO.fechaDiligenciamiento,

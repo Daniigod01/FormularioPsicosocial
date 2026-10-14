@@ -22,7 +22,7 @@ const punto = (i: number, n: number, radio: number) => {
 };
 
 /** Gráfica de araña (0 a 100) con cualquier número de ejes, dibujada con primitivas SVG de react-pdf. */
-export function Radar({ ejes }: { ejes: EjePerfil[] }) {
+export function Radar({ ejes, mostrarValores = true, escala = 1 }: { ejes: EjePerfil[]; mostrarValores?: boolean; escala?: number }) {
   const n = ejes.length;
   const poligono = ejes
     .map((e, i) => {
@@ -32,7 +32,7 @@ export function Radar({ ejes }: { ejes: EjePerfil[] }) {
     .join(" ");
 
   return (
-    <Svg width={RADAR_W} height={RADAR_H} viewBox={`0 0 ${RADAR_W} ${RADAR_H}`}>
+    <Svg width={RADAR_W * escala} height={RADAR_H * escala} viewBox={`0 0 ${RADAR_W} ${RADAR_H}`}>
       {[0.25, 0.5, 0.75, 1].map((f) => (
         <Circle key={f} cx={CX} cy={CY} r={R * f} fill="none" stroke={REJILLA} strokeWidth={0.8} />
       ))}
@@ -50,7 +50,7 @@ export function Radar({ ejes }: { ejes: EjePerfil[] }) {
       {ejes.map((e, i) => {
         const p = punto(i, n, R + 10);
         const anchor = p.sen > 0.25 ? "start" : p.sen < -0.25 ? "end" : "middle";
-        const alto = (e.lineas.length + 1) * INTERLINEA;
+        const alto = (e.lineas.length + (mostrarValores ? 1 : 0)) * INTERLINEA;
         // arriba: el bloque va sobre el punto; abajo: bajo el punto; a los lados: centrado
         const arriba = p.y - (alto * (1 + p.cos)) / 2;
         return (
@@ -61,10 +61,12 @@ export function Radar({ ejes }: { ejes: EjePerfil[] }) {
                 {linea}
               </SvgText>
             ))}
-            <SvgText x={p.x} y={arriba + 10 + e.lineas.length * INTERLINEA} textAnchor={anchor} fill={AZUL}
-              style={{ fontFamily: "Carlito", fontSize: 11.5, fontWeight: 700 }}>
-              {`${e.valor}%`}
-            </SvgText>
+            {mostrarValores && (
+              <SvgText x={p.x} y={arriba + 10 + e.lineas.length * INTERLINEA} textAnchor={anchor} fill={AZUL}
+                style={{ fontFamily: "Carlito", fontSize: 11.5, fontWeight: 700 }}>
+                {`${e.valor}%`}
+              </SvgText>
+            )}
           </React.Fragment>
         );
       })}

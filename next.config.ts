@@ -8,6 +8,7 @@ const nextConfig: NextConfig = {
   // incluye la fuente y los logos de /assets en el despliegue de Vercel
   outputFileTracingIncludes: {
     "/api/pdf/perfil-riesgo": ["./assets/**/*"],
+    "/api/pdf/plan-acompanamiento": ["./assets/**/*"],
   },
 };
 

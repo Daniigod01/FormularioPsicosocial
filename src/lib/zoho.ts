@@ -13,7 +13,7 @@ import { createHmac, timingSafeEqual } from "crypto";
 import { PREGUNTAS, type Respuestas } from "./preguntas";
 import type { Diagnostico } from "./puntaje";
 import {
-  CAMPO_PREGUNTA, CAMPO_RESULTADO, ESTADO_DILIGENCIADO, ESTADO_ENLACE_ENVIADO, FUENTE_AUTOAPLICADO,
+  CAMPO_BARRERA_PLAN, CAMPO_PREGUNTA, CAMPO_RESULTADO, ESTADO_DILIGENCIADO, ESTADO_ENLACE_ENVIADO, FUENTE_AUTOAPLICADO,
   MODULO_ZOHO, VALOR_BANDERA, VALOR_OPCION,
 } from "./zoho-campos";
 
@@ -85,6 +85,15 @@ export function construirRegistro(
       if (vs.length) r[campo] = vs;
     }
   }
+
+  // Barreras para el plan de acompañamiento: cada barrera marcada en la pregunta 26 va a un campo (Barrera 1, 2, 3).
+  // Si marca menos de 3, los demás quedan sin tocar. Si elige «Otra», va lo que escribió.
+  const marcadas = Array.isArray(respuestas.p26_barreras) ? respuestas.p26_barreras : [];
+  marcadas.slice(0, CAMPO_BARRERA_PLAN.length).forEach((codigo, i) => {
+    const otra = codigo === "otra" ? String(respuestas.p26_otra ?? "").trim() : "";
+    const barrera = otra || VALOR_OPCION.p26_barreras?.[codigo];
+    if (barrera) r[CAMPO_BARRERA_PLAN[i]] = barrera.slice(0, 255); // los campos de texto de Zoho admiten 255 caracteres
+  });
 
   const C = CAMPO_RESULTADO;
   for (const e of dx.ejes) {

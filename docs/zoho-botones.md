@@ -55,6 +55,20 @@ string button.generarEnlaceDiagnostico(string participanteId)
         documento = p.get("Name");
         celular = p.get("N_mero_de_celular_Principal");
         correo = p.get("Email");
+        // Nombre completo = primer nombre + segundo nombre + primer apellido + segundo apellido (los que existan)
+        nombreCompleto = "";
+        partesNombre = List();
+        partesNombre.add(p.get("Primer_nombre"));
+        partesNombre.add(p.get("Segundo_nombre"));
+        partesNombre.add(p.get("Primer_apellido"));
+        partesNombre.add(p.get("Segundo_apellido"));
+        for each parte in partesNombre
+        {
+          if(parte != null && parte != "")
+          {
+            nombreCompleto = (nombreCompleto + " " + parte).trim();
+          }
+        }
 
         reg = Map();
         reg.put("Name", documento);
@@ -69,6 +83,10 @@ string button.generarEnlaceDiagnostico(string participanteId)
         if(correo != null && correo != "")
         {
           reg.put("Email", correo);
+        }
+        if(nombreCompleto != "")
+        {
+          reg.put("Nombre_completo", nombreCompleto);
         }
         creado = zoho.crm.createRecord("Psicosocial_RutaM_v2", reg);
         idReg = creado.get("id");
@@ -152,3 +170,11 @@ string button.generarEnlaceDiagnostico(string participanteId)
 | Correo electrónico | `Email` | La función del botón | Copia `Email` de Orientación RutaM |
 
 > **Cuidado con los nombres API:** «Fecha de envio» lleva el nombre `Fecha_de_diligenciamiento` y «Fecha de diligenciamiento» lleva `Fecha_de_diligenciamiento1`. Zoho no cambia el nombre API al renombrar la etiqueta.
+
+
+## Cambio del 14-oct-2026: «Nombre completo» al crear el enlace
+La función `generarEnlaceDiagnostico` de arriba ahora copia el nombre de la participante al registro psicosocial (campo **Nombre completo**,
+`Nombre_completo`), uniendo Primer nombre, Segundo nombre, Primer apellido y Segundo apellido de Orientación RutaM (los que existan).
+Para activarlo hay que **reemplazar el código de la función en Zoho** (Configuración → Developer Hub → Funciones → `generarEnlaceDiagnostico`) y guardar.
+Los registros creados antes del cambio no tienen el nombre; los PDF lo buscan entonces en Orientación RutaM. Como el resto de esta guía,
+este código no se ha probado en tu CRM.

@@ -9,7 +9,8 @@
     "lint": "eslint",
     "test:puntaje": "tsx scripts/test-puntaje.ts",
     "test:zoho": "tsx scripts/test-zoho.ts",
-    "test:pdf": "tsx scripts/test-pdf-datos.ts"
+    "test:pdf": "tsx scripts/test-pdf-datos.ts",
+    "test:plan": "tsx scripts/test-plan-datos.ts"
   },
   "dependencies": {
     "@react-pdf/renderer": "^4.9.0",

@@ -11,7 +11,7 @@ export function texto(v: unknown): string {
   return String(v).trim();
 }
 
-const lista = (v: unknown): string[] => (Array.isArray(v) ? v.map(texto).filter(Boolean) : texto(v) ? [texto(v)] : []);
+export const lista = (v: unknown): string[] => (Array.isArray(v) ? v.map(texto).filter(Boolean) : texto(v) ? [texto(v)] : []);
 
 const sinTildes = (s: string) => s.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().trim();
 
@@ -23,7 +23,7 @@ export function normalizarNivel(v: unknown): Nivel | null {
   return null;
 }
 
-function numero(v: unknown): number | null {
+export function numero(v: unknown): number | null {
   const n = typeof v === "number" ? v : parseFloat(String(v ?? "").replace(",", "."));
   return Number.isFinite(n) ? n : null;
 }
@@ -105,7 +105,7 @@ export function construirPerfilRiesgo(registro: Record<string, unknown>, orienta
   return {
     ok: true,
     data: {
-      participante: nombreDeOrientacion(orientacion) ?? documento,
+      participante: texto(registro[CAMPOS.nombreCompleto]) || (nombreDeOrientacion(orientacion) ?? documento),
       documento,
       fechaDiligenciamiento: fechaLarga(registro[CAMPOS.fechaDiligenciamiento]) || "No registrada",
       motivo: (motivoBase === "Otro" && motivoOtro ? `Otro: ${motivoOtro}` : motivoBase) || "No registrado",

@@ -1,0 +1,215 @@
+{
+ "_nota": "Instantánea (14-oct-2026) de las opciones de lista de las preguntas en Zoho, módulo Psicosocial RutaM v2. Sirve para que scripts/test-zoho.ts avise si el código envía un texto que Zoho no tiene. Si cambias una lista en Zoho, actualiza este archivo.",
+ "Cu_l_es_el_motivo_principal_por_el_que_quieres_rec": [
+  "Sin motivo específico / quiero conocer el acompañamiento",
+  "Autoconcepto y autoestima",
+  "Tristeza, frustración o desánimo",
+  "Violencia o control por parte de mi pareja o expareja",
+  "Violencia en mi familia, trabajo o comunidad",
+  "Conflictos en mis relaciones con otras personas",
+  "Consumo de alcohol u otras sustancias (propio o de alguien cercano)",
+  "Orientación familiar o de pareja",
+  "Estrés frente al trabajo o la adaptación a un nuevo empleo",
+  "Motivación para lograr mis metas personales o laborales",
+  "Autonomía y toma de decisiones sobre mi vida o mi dinero",
+  "Dificultades para aprender o concentrarme",
+  "Un duelo o una pérdida reciente",
+  "Prepararme para una entrevista o proceso laboral",
+  "Otro"
+ ],
+ "C_mo_llegaste_a_este_acompa_amiento": [
+  "Por mi propia decisión",
+  "Porque mi empresa o líder me lo sugirió",
+  "Porque una profesional del programa me lo recomendó",
+  "Otro"
+ ],
+ "Actualmente_est_s_en_un_tratamiento_psicol_gico_o": [
+  "Sí",
+  "No",
+  "Prefiero no responder"
+ ],
+ "En_los_ltimos_12_meses_tu_pareja_o_expareja_ha_hec": [
+  "Me ha insultado, humillado o menospreciado delante de otras personas",
+  "Me ha amenazado o me ha dado miedo",
+  "Me ha impedido ver a mi familia o amigos",
+  "Ha controlado o me ha quitado mi dinero o mis documentos",
+  "Me ha golpeado, empujado o hecho daño físico",
+  "Me ha obligado a tener relaciones sexuales sin que yo quisiera",
+  "Ninguna de las anteriores",
+  "No tengo pareja actualmente / no aplica"
+ ],
+ "Has_vivido_o_vives_situaciones_de_violencia_en_tu": [
+  "Sí",
+  "No"
+ ],
+ "De_qu_tipo1": [
+  "Física",
+  "Psicológica",
+  "Económica",
+  "Sexual",
+  "Otra"
+ ],
+ "Has_vivido_situaciones_de_violencia_o_acoso_en_tu": [
+  "Sí",
+  "No"
+ ],
+ "Has_vivido_situaciones_de_violencia_en_tu_comunida": [
+  "Sí",
+  "No",
+  "No aplica"
+ ],
+ "Cu_ntas_personas_sientes_que_tienes_cerca_a_quiene": [
+  "Ninguna",
+  "1 a 2 personas",
+  "3 o más personas"
+ ],
+ "Participas_en_alg_n_grupo_red_comunitaria_religios": [
+  "Sí",
+  "No"
+ ],
+ "Tienes_responsabilidades_de_cuidado_de_ni_os_as_pe": [
+  "Sí",
+  "No"
+ ],
+ "A_qui_nes_cuidas": [
+  "Niños/as",
+  "Personas mayores",
+  "Personas con discapacidad",
+  "Otro"
+ ],
+ "Estas_responsabilidades_han_dificultado_tu_permane": [
+  "Sí",
+  "No",
+  "En ocasiones"
+ ],
+ "Cuentas_con_alguien_que_pueda_apoyarte_con_el_cuid": [
+  "Sí",
+  "No"
+ ],
+ "En_las_ltimas_dos_semanas_cu_les_de_estas_emocione": [
+  "Tristeza",
+  "Culpa",
+  "Miedo",
+  "Frustración",
+  "Rabia",
+  "Soledad",
+  "Humillación",
+  "Resentimiento",
+  "Ansiedad",
+  "Desesperanza",
+  "Irritabilidad",
+  "Apatía / desgano",
+  "Inseguridad",
+  "Ninguna de las anteriores, me he sentido bien"
+ ],
+ "Con_cu_les_de_estas_situaciones_te_identificas_act": [
+  "Me cuesta motivarme",
+  "Siento que no valgo o no confío en mí misma",
+  "Dejo las cosas para después y no las termino",
+  "Me cuesta expresar lo que siento",
+  "Desconfío de las personas a mi alrededor",
+  "Otra",
+  "Ninguna de las anteriores"
+ ],
+ "Cuando_te_sientes_as_qu_sueles_hacer_para_sentirte": [
+  "Hablar con alguien de confianza",
+  "Hacer alguna actividad que me gusta (caminar, música, manualidades, etc.)",
+  "Buscar ayuda profesional",
+  "Orar o practicar mi espiritualidad",
+  "Prefiero no hacer nada / se me dificulta manejarlo",
+  "Otra"
+ ],
+ "Indicadores_de_alerta_has_vivido_alguna_de_estas_s": [
+  "En las últimas semanas he pensado que no vale la pena seguir, o he tenido ganas de hacerme daño",
+  "He tenido dificultades importantes para dormir",
+  "He sentido que el consumo de alcohol u otras sustancias se me ha salido de las manos",
+  "He sentido que pierdo el control de mis pensamientos o percibo cosas que otras personas no perciben",
+  "Ninguna de las anteriores",
+  "Prefiero no responder"
+ ],
+ "Sientes_que_puedes_tomar_tus_propias_decisiones_so": [
+  "Sí, casi siempre",
+  "A veces",
+  "Casi nunca"
+ ],
+ "Qui_n_decide_principalmente_sobre_el_uso_del_diner": [
+  "Yo sola",
+  "En conjunto con alguien más",
+  "Otra persona decide por mí"
+ ],
+ "Tienes_una_cuenta_de_ahorros_billetera_digital_o_a": [
+  "Sí",
+  "No"
+ ],
+ "Sientes_que_tienes_libertad_para_buscar_o_mantener": [
+  "Sí",
+  "No",
+  "A veces"
+ ],
+ "Alguien_controla_revisa_o_te_impide_el_acceso_a_tu": [
+  "Sí",
+  "No"
+ ],
+ "Cuentas_con_fuentes_de_ingreso_complementarias_o_a": [
+  "Sí",
+  "No"
+ ],
+ "Recibes_actualmente_alg_n_subsidio_o_apoyo_institu": [
+  "Sí",
+  "No"
+ ],
+ "En_tu_vivienda_actual_existen_condiciones_de_hacin": [
+  "Sí",
+  "No",
+  "Prefiero no responder"
+ ],
+ "Marca_hasta_3_barreras_que_sientes_que_m_s_te_difi": [
+  "Falta de recursos para alimentación o transporte",
+  "Me faltan conocimientos específicos para las vacantes que me interesan",
+  "Falta de apoyo para el cuidado de hijos/as u otras personas a cargo",
+  "Siento poco fortalecidas mis habilidades para la vida",
+  "Falta de recursos para validar mis estudios",
+  "Falta de recursos para convalidar títulos obtenidos en otro país",
+  "Acceso limitado a internet o herramientas tecnológicas",
+  "Estoy viviendo un proceso de duelo migratorio",
+  "Estoy viviendo una situación de riesgo psicosocial",
+  "Tengo procesos jurídicos por resolver relacionados con mi situación migratoria",
+  "Una calamidad doméstica reciente",
+  "Miedo o inseguridad para buscar empleo o presentarme a entrevistas",
+  "Otra"
+ ],
+ "Has_trabajado_antes_en_empresas_formales": [
+  "Sí",
+  "No"
+ ],
+ "Qu_factores_dificultaron_tu_permanencia": [
+  "Factores externos",
+  "Factores internos",
+  "Ambos",
+  "Otro"
+ ],
+ "De_esta_lista_marca_las_2_o_3_que_m_s_te_represent": [
+  "Agilidad para ejecutar tareas",
+  "Manejo del estrés en el trabajo",
+  "Responsabilidad y cumplimiento",
+  "Buena gestión del tiempo",
+  "Capacidad de adaptarme a cosas nuevas",
+  "Trabajo en equipo",
+  "Resolver conflictos de forma constructiva",
+  "Comunicación asertiva y escucha",
+  "Liderazgo e iniciativa",
+  "Proactividad y disposición para aprender",
+  "Compromiso con lo que hago",
+  "Motivación para lograr metas"
+ ],
+ "Cu_les_sientes_que_son_2_o_3_aspectos_que_te_gusta": [
+  "Terminar lo que empiezo (procrastinación)",
+  "Comunicación asertiva",
+  "Seguridad para liderar o decidir",
+  "Sentido de pertenencia con la empresa o el equipo",
+  "Sostener mi motivación en el tiempo",
+  "Cumplir mis compromisos",
+  "Adaptarme mejor a los cambios",
+  "Resolver conflictos con otras personas"
+ ]
+}

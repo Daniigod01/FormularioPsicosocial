@@ -1,3 +1,4 @@
+import fs from "node:fs";
 import { PREGUNTAS } from "../src/lib/preguntas";
 import { calcularDiagnostico } from "../src/lib/puntaje";
 import { construirRegistro, enviarAZoho, estadoDeSesion, evaluarEstado, fechaBogota, firmarToken, verificarToken } from "../src/lib/zoho";
@@ -96,6 +97,33 @@ t("sin credenciales Zoho → modo prueba", (await enviarAZoho(null, resp, dx)).o
 }
 
 flujo().then(() => {
-  console.log(`\n${ok} correctas, ${fail} fallidas`);
+  console.log("Barreras del plan: cada barrera de la pregunta 26 va a un campo (Barrera 1, 2, 3)");
+const dxB = calcularDiagnostico({});
+const regB = (p26: string[], extra: Record<string, string> = {}) => construirRegistro({ p26_barreras: p26, ...extra }, dxB, new Date("2026-10-05T15:30:00Z"));
+const tres = regB(["internet", "cuidado", "miedo_entrevistas"]);
+t("3 barreras -> Barrera 1, 2 y 3, en el orden marcado", tres["Barrera_1"] === VALOR_OPCION.p26_barreras.internet && tres["Barrera_2"] === VALOR_OPCION.p26_barreras.cuidado && tres["Barrera_3"] === VALOR_OPCION.p26_barreras.miedo_entrevistas, tres);
+const dos = regB(["internet", "cuidado"]);
+t("2 barreras -> se llenan 2 y la tercera no se envía (queda vacía)", Boolean(dos["Barrera_1"] && dos["Barrera_2"]) && !("Barrera_3" in dos), Object.keys(dos).filter((k) => k.startsWith("Barrera")));
+const una = regB(["calamidad"]);
+t("1 barrera -> solo Barrera 1", una["Barrera_1"] === VALOR_OPCION.p26_barreras.calamidad && !("Barrera_2" in una));
+const otra = regB(["otra", "internet"], { p26_otra: "  Mi hijo no tiene cupo en el colegio " });
+t("«Otra» con texto -> va lo que escribió", otra["Barrera_1"] === "Mi hijo no tiene cupo en el colegio" && otra["Barrera_2"] === VALOR_OPCION.p26_barreras.internet, otra);
+const otraSin = regB(["otra"]);
+t("«Otra» sin texto -> queda «Otra»", otraSin["Barrera_1"] === "Otra");
+const larga = regB(["otra"], { p26_otra: "x".repeat(400) });
+t("texto muy largo se recorta a 255 (límite de Zoho)", (larga["Barrera_1"] as string).length === 255);
+t("sin barreras no se envía ningún Barrera", !Object.keys(construirRegistro({}, dxB)).some((k) => k.startsWith("Barrera_")));
+
+console.log("Opciones del código = listas reales de Zoho (docs/zoho-listas-psicosocial.json, 14-oct-2026)");
+const listasZoho = JSON.parse(fs.readFileSync("docs/zoho-listas-psicosocial.json", "utf8")) as Record<string, string[]>;
+let sinCoincidir: string[] = [];
+for (const [pid, opciones] of Object.entries(VALOR_OPCION)) {
+  const lista = listasZoho[CAMPO_PREGUNTA[pid]];
+  if (!lista) continue;
+  for (const [codigo, texto] of Object.entries(opciones)) if (!lista.includes(texto)) sinCoincidir.push(`${pid}.${codigo}: ${texto}`);
+}
+t("toda opción que envía el código existe en la lista de Zoho (si no, Zoho puede rechazar el envío)", sinCoincidir.length === 0, sinCoincidir);
+
+console.log(`\n${ok} correctas, ${fail} fallidas`);
   process.exit(fail ? 1 : 0);
 }).catch((e) => { console.error(e); process.exit(1); });

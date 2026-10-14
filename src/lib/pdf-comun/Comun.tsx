@@ -5,7 +5,7 @@ import { ANCHO, CM, COLOR, LOGO_COLSUBSIDIO, LOGO_FCI, MARGEN } from "./recursos
 const { AZUL, AMARILLO, GRAFITO, GRIS, LINEA } = COLOR;
 
 export const base = StyleSheet.create({
-  pagina: { fontFamily: "Carlito", fontSize: 10.5, color: GRAFITO, paddingTop: 3 * CM, paddingBottom: 2.4 * CM, paddingHorizontal: MARGEN },
+  pagina: { fontFamily: "Carlito", fontSize: 10.5, color: GRAFITO, paddingTop: 3 * CM, paddingBottom: 2.1 * CM, paddingHorizontal: MARGEN },
   encabezado: { position: "absolute", top: 0.9 * CM, left: MARGEN, right: MARGEN, height: 2 * CM, flexDirection: "row", alignItems: "center", justifyContent: "space-between" },
   logos: { flexDirection: "row", alignItems: "center" },
   separador: { width: 0.8, height: 28, backgroundColor: LINEA, marginHorizontal: 14 },
@@ -13,7 +13,7 @@ export const base = StyleSheet.create({
   titulo: { fontSize: 28, fontWeight: 700, color: AZUL, lineHeight: 1.15 },
   barra: { width: 45, height: 3.2, backgroundColor: AMARILLO, marginTop: 5, marginBottom: 7 },
   subtitulo: { fontSize: 11, color: GRIS, lineHeight: 1.35, marginBottom: 14 },
-  datos: { borderTopWidth: 0.8, borderTopColor: AZUL, marginBottom: 14 },
+  datos: { borderTopWidth: 0.8, borderTopColor: AZUL, marginBottom: 12 },
   fila: { flexDirection: "row", borderBottomWidth: 0.5, borderBottomColor: LINEA },
   etiqueta: { fontSize: 9, color: GRIS, marginBottom: 1 },
   valor: { fontSize: 11, fontWeight: 700 },

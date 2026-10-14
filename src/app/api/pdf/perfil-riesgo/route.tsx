@@ -2,7 +2,7 @@ import React from "react";
 import { renderToBuffer } from "@react-pdf/renderer";
 import { leerRegistro, ZohoError, zohoConfigurado } from "@/lib/zoho-lectura";
 import { CAMPOS, CAMPOS_A_LEER, CAMPOS_NOMBRE_ORIENTACION, MODULO_ORIENTACION, MODULO_ZOHO } from "@/lib/perfil-riesgo/config";
-import { construirPerfilRiesgo } from "@/lib/perfil-riesgo/build-data";
+import { construirPerfilRiesgo, texto } from "@/lib/perfil-riesgo/build-data";
 import { datosDemo } from "@/lib/perfil-riesgo/demo";
 import { PerfilRiesgoPdf } from "@/lib/perfil-riesgo/PerfilRiesgoPdf";
 import { nombreArchivo, pagina, respuestaPdf, validarSolicitud } from "@/lib/pdf-comun/http";
@@ -41,7 +41,7 @@ export async function GET(req: Request) {
     // El nombre de la participante vive en Orientación RutaM; si no se puede leer, el PDF sigue con el documento.
     let orientacion: Record<string, unknown> | null = null;
     const lookup = registro[CAMPOS.participante] as { id?: string } | null;
-    if (lookup?.id) {
+    if (lookup?.id && !texto(registro[CAMPOS.nombreCompleto])) {
       try {
         orientacion = await leerRegistro(MODULO_ORIENTACION, String(lookup.id), CAMPOS_NOMBRE_ORIENTACION.length ? ["Name", ...CAMPOS_NOMBRE_ORIENTACION] : undefined);
       } catch (e) {

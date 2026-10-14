@@ -23,13 +23,14 @@ const dx = calcularDiagnostico(resp);
 const registro: Record<string, unknown> = {
   ...construirRegistro(resp, dx, new Date("2026-10-05T15:30:00Z")),
   Name: "1000000000",
+  Nombre_completo: "Ana María Rojas Díaz",
   Participante_RutaM: { name: "1000000000", id: "6174744000107001007" },
   N_mero_de_tel_fono: "3000000000",
   Email: "ana@ejemplo.com",
 };
 
 console.log("Registro diligenciado -> datos del PDF");
-const r = construirPerfilRiesgo(registro, { Name: "1000000000", Nombres: "Ana María", Apellidos: "Rojas Díaz" });
+const r = construirPerfilRiesgo(registro, { Name: "1000000000", Nombres: "Otro", Apellidos: "Nombre" });
 t("se arma sin faltantes", r.ok, !r.ok && r.faltantes);
 if (r.ok) {
   const d = r.data;
@@ -40,7 +41,7 @@ if (r.ok) {
   t("alerta prioritaria y alerta naranja", d.alertaInmediata && d.alertaControlEconomico);
   t("banderas rojas con el texto del CRM", d.banderas.length === dx.banderasRojas.length && d.banderas.every((b) => /^P\d+ /.test(b)), d.banderas);
   t("intensidad según el nivel", d.intensidad === "2 llamadas y canal abierto");
-  t("nombre tomado de Orientación (Nombres + Apellidos)", d.participante === "Ana María Rojas Díaz", d.participante);
+  t("nombre: el del registro («Nombre completo») tiene prioridad", d.participante === "Ana María Rojas Díaz", d.participante);
   t("documento = nombre del registro", d.documento === "1000000000");
   t("fecha legible", d.fechaDiligenciamiento === "5 de octubre de 2026", d.fechaDiligenciamiento);
   t("contacto copiado al registro", d.telefono === "3000000000" && d.correo === "ana@ejemplo.com");
@@ -59,8 +60,11 @@ const r3 = construirPerfilRiesgo(sinNivel, null);
 t("falta el nivel: lo dice", !r3.ok && r3.faltantes.includes("Nivel de riesgo"), r3);
 
 console.log("Sin datos de Orientación");
-const r4 = construirPerfilRiesgo(registro, null);
-t("sin Orientación, el PDF muestra el documento como participante", r4.ok && r4.data.participante === "1000000000");
+const { Nombre_completo: _n, ...sinNombre } = registro;
+const r4 = construirPerfilRiesgo(sinNombre, null);
+t("sin nombre ni Orientación, el PDF muestra el documento como participante", r4.ok && r4.data.participante === "1000000000");
+const r5 = construirPerfilRiesgo(sinNombre, { Primer_nombre: "Ana", Segundo_nombre: "María", Primer_apellido: "Rojas", Segundo_apellido: "Díaz" });
+t("registros anteriores (sin «Nombre completo»): se arma desde Orientación", r5.ok && r5.data.participante === "Ana María Rojas Díaz", r5.ok && r5.data.participante);
 t("nombre: no detecta campos que no son de nombre", nombreDeOrientacion({ Name: "1", Nombre_de_la_empresa: "X" }) === null);
 t("nombre: Primer_nombre/Primer_apellido", nombreDeOrientacion({ Primer_nombre: "Ana", Primer_apellido: "Rojas" }) === "Ana Rojas");
 

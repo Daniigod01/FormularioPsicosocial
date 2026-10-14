@@ -59,7 +59,7 @@ export const VALOR_OPCION: Record<string, Record<string, string>> = {
     "violencia_pareja": "Violencia o control por parte de mi pareja o expareja",
     "violencia_entorno": "Violencia en mi familia, trabajo o comunidad",
     "conflictos": "Conflictos en mis relaciones con otras personas",
-    "consumo": "Consumo de alcohol u otras sustancias (propio o de alguien cercano) Orientación familiar o de pareja",
+    "consumo": "Consumo de alcohol u otras sustancias (propio o de alguien cercano)",
     "orientacion_familiar": "Orientación familiar o de pareja",
     "estres_trabajo": "Estrés frente al trabajo o la adaptación a un nuevo empleo",
     "motivacion": "Motivación para lograr mis metas personales o laborales",
@@ -81,7 +81,7 @@ export const VALOR_OPCION: Record<string, Record<string, string>> = {
     "prefiero_no": "Prefiero no responder"
   },
   "p04_pareja": {
-    "insulto": "Me ha insultado, humillado o menospreciado delante de otras persona",
+    "insulto": "Me ha insultado, humillado o menospreciado delante de otras personas",
     "amenaza": "Me ha amenazado o me ha dado miedo",
     "aislamiento": "Me ha impedido ver a mi familia o amigos",
     "control_economico": "Ha controlado o me ha quitado mi dinero o mis documentos",
@@ -135,7 +135,7 @@ export const VALOR_OPCION: Record<string, Record<string, string>> = {
     "ocasiones": "En ocasiones"
   },
   "p13_apoyo_cuidado": {
-    "si": "Si",
+    "si": "Sí",
     "no": "No"
   },
   "p14_emociones": {
@@ -165,7 +165,7 @@ export const VALOR_OPCION: Record<string, Record<string, string>> = {
   },
   "p16_afrontamiento": {
     "hablar": "Hablar con alguien de confianza",
-    "actividad": "Hacer alguna actividad que me gusta (caminar, música, manualidades, etc.) Buscar ayuda profesional",
+    "actividad": "Hacer alguna actividad que me gusta (caminar, música, manualidades, etc.)",
     "ayuda_profesional": "Buscar ayuda profesional",
     "orar": "Orar o practicar mi espiritualidad",
     "nada": "Prefiero no hacer nada / se me dificulta manejarlo",
@@ -217,8 +217,8 @@ export const VALOR_OPCION: Record<string, Record<string, string>> = {
   },
   "p26_barreras": {
     "alimentacion_transporte": "Falta de recursos para alimentación o transporte",
-    "conocimientos": "Me faltan conocimientos específicos para las vacantes que me interesan |Siento poco fortalecidas mis habilidades",
-    "habilidades_vida": "Siento poco fortalecidas mis habilidades",
+    "conocimientos": "Me faltan conocimientos específicos para las vacantes que me interesan",
+    "habilidades_vida": "Siento poco fortalecidas mis habilidades para la vida",
     "cuidado": "Falta de apoyo para el cuidado de hijos/as u otras personas a cargo",
     "validar_estudios": "Falta de recursos para validar mis estudios",
     "convalidar_titulos": "Falta de recursos para convalidar títulos obtenidos en otro país",
@@ -265,6 +265,12 @@ export const VALOR_OPCION: Record<string, Record<string, string>> = {
     "conflictos": "Resolver conflictos con otras personas"
   }
 };
+
+/**
+ * Campos «Barrera 1, 2 y 3» (sección «Plan de trabajo y acompañamiento»): se llenan con lo que la participante
+ * marcó en la pregunta 26, una barrera por campo. Si marca menos de 3, los demás quedan vacíos.
+ */
+export const CAMPO_BARRERA_PLAN = ["Barrera_1", "Barrera_2", "Barrera_3"] as const;
 
 /** Campos de resultado, estado y metadatos */
 export const CAMPO_RESULTADO = {

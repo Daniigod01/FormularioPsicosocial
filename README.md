@@ -17,8 +17,9 @@ módulo «Información Psicosocial». Base: el proyecto del formulario de empres
 | Campo «Enlace del formulario» en Zoho | ✅ creado |
 | Botón «Generar enlace de diagnóstico» (guarda el enlace en ese campo; la orientadora lo copia) | ⏳ código en `docs/zoho-botones.md`, sin probar en el CRM |
 | Mostrar datos prellenados (nombre, documento…) dentro del formulario | ⏳ |
-| PDF «Perfil de riesgo psicosocial» (`/api/pdf/perfil-riesgo`): gráfica de araña de 5 ejes, nivel, alertas, banderas, barreras y fortalezas | ✅ 23 pruebas (`npm run test:pdf`) y petición real a la ruta · ⏳ falta probarlo con Zoho real (ver `docs/pdf-perfil-riesgo.md`) |
-| PDF del plan de trabajo y seguimiento, llamadas 1 y 2 en Zoho | ⏳ en espera de la estructura nueva |
+| PDF «Perfil de riesgo psicosocial» (`/api/pdf/perfil-riesgo`): gráfica de araña de 5 ejes, nivel, alertas, banderas, barreras y fortalezas | ✅ 24 pruebas (`npm run test:pdf`) y petición real a la ruta · ⏳ falta probarlo con Zoho real (ver `docs/pdf-perfil-riesgo.md`) |
+| PDF «Mi plan de acompañamiento psicosocial» (`/api/pdf/plan-acompanamiento`), para la participante: mapa, revisión, fortalezas, barreras, metas, herramientas, recomendaciones, próximo contacto | ✅ 26 pruebas (`npm run test:plan`) y petición real a la ruta · campos creados en Zoho (14-oct-2026) · ⏳ falta ordenarlos en una sección del formulario y probar con Zoho real (ver `docs/pdf-plan-acompanamiento.md`) |
+| Llamada 2 y plan de salida en Zoho | ⏳ en espera de la estructura nueva |
 
 Campos del CRM: `docs/campos-zoho-psicosocial.xlsx` (hoja «Pendientes» = decisiones por confirmar con la solicitante).
 
@@ -28,7 +29,8 @@ Campos del CRM: `docs/campos-zoho-psicosocial.xlsx` (hoja «Pendientes» = decis
 npm install
 npm run dev          # http://localhost:3000
 npm run test:puntaje # pruebas del motor
-npm run test:pdf     # pruebas del armado de datos del PDF
+npm run test:pdf     # pruebas del armado de datos del perfil de riesgo (PDF)
+npm run test:plan    # pruebas del armado de datos del plan de acompañamiento (PDF)
 ```
 
 ## Variables de entorno (Vercel)
