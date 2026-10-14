@@ -24,7 +24,8 @@ ${lista.length ? `<ul style="font-size:16px;line-height:1.7">${lista.map((i) => 
 export type Solicitud = { ok: true; id: string; url: URL } | { ok: false; respuesta: Response };
 
 /** Revisa la clave y el ID. Falla cerrado si PDF_ACCESS_KEY no está configurada. */
-export function validarSolicitud(req: Request, titulo: string): Solicitud {
+export function validarSolicitud(req: Request, titulo: string, opciones: { exigirId?: boolean } = {}): Solicitud {
+  const exigirId = opciones.exigirId ?? true;
   const url = new URL(req.url);
   const esperada = process.env.PDF_ACCESS_KEY;
   if (!esperada) return { ok: false, respuesta: pagina(titulo, 500, "Falta configurar PDF_ACCESS_KEY en el servidor.") };
@@ -35,7 +36,7 @@ export function validarSolicitud(req: Request, titulo: string): Solicitud {
   if (id.includes(",")) {
     return { ok: false, respuesta: pagina(titulo, 400, "Selecciona un solo registro para generar el documento.") };
   }
-  if (!/^\d{10,25}$/.test(id)) {
+  if (exigirId && !/^\d{10,25}$/.test(id)) {
     return { ok: false, respuesta: pagina(titulo, 400, "Falta el identificador del registro.") };
   }
   return { ok: true, id, url };

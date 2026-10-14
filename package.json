@@ -8,9 +8,11 @@
     "start": "next start",
     "lint": "eslint",
     "test:puntaje": "tsx scripts/test-puntaje.ts",
-    "test:zoho": "tsx scripts/test-zoho.ts"
+    "test:zoho": "tsx scripts/test-zoho.ts",
+    "test:pdf": "tsx scripts/test-pdf-datos.ts"
   },
   "dependencies": {
+    "@react-pdf/renderer": "^4.9.0",
     "next": "16.3.5",
     "react": "19.2.8",
     "react-dom": "19.2.8"
