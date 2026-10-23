@@ -9,7 +9,8 @@ export function datosDemoPlan(): PlanAcompanamientoData {
     documento: "1000000000",
     profesional: "Laura Martínez",
     contacto: "laura.martinez@ejemplo.com",
-    fechaDiagnostico: "21 de septiembre de 2026",
+    fechaDiagnostico: "21 sep 2026",
+    fechaLlamada1: "24 sep 2026",
     estadoRuta: "Primer contacto realizado",
     ejes: EJES_PLAN.map((e, i) => ({ id: e.id, lineas: e.lineas, prosa: e.prosa, valor: valores[i] })),
     revision:

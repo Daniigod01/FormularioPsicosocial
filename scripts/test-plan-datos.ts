@@ -25,6 +25,7 @@ const base: Record<string, unknown> = {
   Participante_RutaM: { name: "1000000000", id: "6174744000107001007" },
   Nombre_completo: "Ana María Rojas Díaz",
   [P.profesional]: "Angelica Posada",
+  [P.fechaLlamada1]: "2026-10-12T16:00:00-05:00",
   [P.revision]: "Vimos que estás cargando mucho al tiempo.",
   [P.recomendaciones]: "Duerme a una hora fija.",
   [P.herramientas]: ["Guía de fortalezas", "Cápsula virtual"],
@@ -51,6 +52,8 @@ if (r.ok) {
   delete CONTACTOS_PROFESIONALES["Angelica Posada"];
   t("5 ejes", d.ejes.length === 5 && d.ejes[0].lineas.join(" ") === "Seguridad en mis relaciones", d.ejes[0]);
   t("fortalezas y aspectos a fortalecer vienen del diagnóstico", d.fortalezas.length === 2 && d.aFortalecer.length === 1, [d.fortalezas, d.aFortalecer]);
+  t("fecha de la llamada 1: solo la fecha, tomada de «L1 Hora de inico»", d.fechaLlamada1 === "12 oct 2026", d.fechaLlamada1);
+  t("fecha del diagnóstico en formato corto", d.fechaDiagnostico === "5 oct 2026", d.fechaDiagnostico);
   t("metas: se ignora la fila vacía y la fecha sale corta", d.metas.length === 1 && d.metas[0].fecha === "12 oct 2026", d.metas);
   t("barreras: las 2 que marcó la participante en el formulario; la profesional completó la estrategia de la primera", d.barreras.length === 2 && d.barreras[0].apoyo === "Programa" && d.barreras[1].estrategia === "", d.barreras);
   t("herramientas incluyen «otro recurso»", d.herramientas.length === 3 && d.herramientas[2] === "Lista de vacantes");
@@ -70,6 +73,8 @@ t("cualquier otro texto interno", estadoParaParticipante("Remitido") === "En aco
 console.log("Casos que no deben generar PDF");
 const sinRevision = construirPlanAcompanamiento({ ...base, [P.revision]: "" }, orientacion);
 t("sin revisión de la profesional", !sinRevision.ok && sinRevision.faltantes.some((f) => /Revisión/.test(f)), sinRevision);
+const sinFechaLlamada = construirPlanAcompanamiento({ ...base, [P.fechaLlamada1]: null }, orientacion);
+t("sin fecha de la llamada 1: no se genera y lo dice", !sinFechaLlamada.ok && sinFechaLlamada.faltantes.some((f) => /llamada 1/.test(f)), sinFechaLlamada);
 const sinMetas = construirPlanAcompanamiento({ ...base, [P.metas[0].meta]: "" }, orientacion);
 t("sin metas", !sinMetas.ok && sinMetas.faltantes.some((f) => /meta/.test(f)), sinMetas);
 const sinDiligenciar = construirPlanAcompanamiento({ ...base, Estado_del_diagn_stico: "Enlace enviado" }, orientacion);

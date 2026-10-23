@@ -15,6 +15,8 @@ export const CAMPOS_PLAN = {
   recomendaciones: "Recomendaciones_del_plan", // ✔ texto largo, «Recomendaciones del plan»
 
   // ---- Ya existían en Zoho ----
+  /** Fecha de la llamada 1: se toma de «L1 Hora de inico» (fecha y hora de inicio; el nombre de API conserva la errata «inico»). */
+  fechaLlamada1: "L1_Hora_de_inico", // ✔ fecha y hora; en el PDF solo se muestra la fecha
   herramientas: "L1_Herramientas_y_recursos_entregados", // ✔ lista de selección múltiple
   herramientaOtra: "L1_Otro_recurso_cu_l", // ✔ texto de una línea (opcional)
   fechaProximaLlamada: "L1_Fecha_agendada_Llamada_2", // ✔ fecha
@@ -62,7 +64,7 @@ export const TEXTOS = {
 /** Los campos que se piden a Zoho para este documento. */
 export const CAMPOS_PLAN_A_LEER: string[] = [
   CAMPOS_PLAN.revision, CAMPOS_PLAN.recomendaciones, CAMPOS_PLAN.herramientas, CAMPOS_PLAN.herramientaOtra,
-  CAMPOS_PLAN.fechaProximaLlamada, CAMPOS_PLAN.canalContacto, CAMPOS_PLAN.estadoCaso, CAMPOS_PLAN.profesional,
+  CAMPOS_PLAN.fechaLlamada1, CAMPOS_PLAN.fechaProximaLlamada, CAMPOS_PLAN.canalContacto, CAMPOS_PLAN.estadoCaso, CAMPOS_PLAN.profesional,
   ...CAMPOS_PLAN.metas.flatMap((m) => [m.meta, m.primerPaso, m.fecha]),
   ...CAMPOS_PLAN.barreras.flatMap((b) => [b.barrera, b.estrategia, b.apoyo]),
 ];

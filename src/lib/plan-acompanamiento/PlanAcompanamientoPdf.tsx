@@ -65,10 +65,9 @@ export function PlanAcompanamientoPdf({ data, ejemplo = false }: { data: PlanAco
         <Encabezado />
         <Titulo titulo="Mi plan de acompañamiento psicosocial" subtitulo="Empleabilidad, empoderamiento y autonomía económica." />
         <Datos
-          columnas={3}
-          items={[
-            ["Nombre", data.nombre], ["Documento", data.documento], ["Fecha del diagnóstico", data.fechaDiagnostico],
-            ["Profesional que te acompaña", data.profesional], ["Contacto de la profesional", data.contacto], ["Estado en la ruta", data.estadoRuta],
+          filas={[
+            [["Nombre", data.nombre], ["Documento", data.documento], ["Fecha del diagnóstico", data.fechaDiagnostico], ["Fecha de la llamada 1", data.fechaLlamada1]],
+            [["Profesional que te acompaña", data.profesional], ["Estado en la ruta", data.estadoRuta, 1.2], ["Contacto de la profesional", data.contacto, 1.8]],
           ]}
         />
 

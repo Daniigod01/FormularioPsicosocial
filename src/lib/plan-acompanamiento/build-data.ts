@@ -17,7 +17,7 @@ export function estadoParaParticipante(estado: string): string {
 }
 
 const MESES = ["ene", "feb", "mar", "abr", "may", "jun", "jul", "ago", "sep", "oct", "nov", "dic"];
-/** «28 sep 2026»: cabe en una columna angosta. Si no es una fecha AAAA-MM-DD, devuelve el texto tal cual. */
+/** «28 sep 2026»: cabe en una columna angosta. Acepta AAAA-MM-DD o fecha y hora de Zoho (se usa la fecha tal como viene, ya en hora local). Si no es una fecha, devuelve el texto tal cual. */
 export function fechaCorta(v: unknown): string {
   const s = texto(v);
   const m = /^(\d{4})-(\d{2})-(\d{2})/.exec(s);
@@ -47,6 +47,9 @@ export function construirPlanAcompanamiento(
     if (n === null && estado === ESTADO_DILIGENCIADO) faltantes.push(`Porcentaje del eje ${e.id} del diagnóstico`);
     return { id: e.id, lineas: e.lineas, prosa: e.prosa, valor: Math.round(Math.min(100, Math.max(0, n ?? 0))) };
   });
+
+  const fechaLlamada1 = fechaCorta(registro[P.fechaLlamada1]);
+  if (!fechaLlamada1) faltantes.push(`Fecha de la llamada 1 (campo «L1 Hora de inico»)${noExiste(P.fechaLlamada1)}`);
 
   const revision = texto(registro[P.revision]);
   if (!revision) faltantes.push(`Revisión de la profesional${noExiste(P.revision)}`);
@@ -80,7 +83,8 @@ export function construirPlanAcompanamiento(
       documento,
       profesional: profesional || "Tu profesional del programa",
       contacto,
-      fechaDiagnostico: fechaLarga(registro[CAMPOS.fechaDiligenciamiento]) || "No registrada",
+      fechaDiagnostico: fechaCorta(registro[CAMPOS.fechaDiligenciamiento]) || "No registrada",
+      fechaLlamada1,
       estadoRuta: estadoParaParticipante(texto(registro[P.estadoCaso])),
       ejes,
       revision,

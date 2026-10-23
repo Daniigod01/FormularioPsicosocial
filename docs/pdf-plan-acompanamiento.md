@@ -18,6 +18,7 @@ va en lenguaje cercano.
 |---|---|
 | Nombre | Campo «Nombre completo» del registro, que la función del botón copia desde Orientación RutaM al crear el enlace (si falta, se busca en Orientación RutaM) |
 | Documento, fecha del diagnóstico | Ya existen: nombre del registro y «Fecha de diligenciamiento» |
+| Fecha de la llamada 1 | Ya existe: «L1 Hora de inico» (fecha y hora de inicio de la llamada 1); en el PDF se muestra solo la fecha. Es obligatoria: la profesional debe registrarla |
 | Profesional que te acompaña | Campo «Psicosocial encargada» (Angelica Posada o Johana Diaz), de la sección Llamada 1 |
 | Contacto de la profesional | `CONTACTOS_PROFESIONALES` en `src/lib/plan-acompanamiento/config.ts`: se escribe ahí el correo o teléfono de cada una. Mientras esté vacío, el plan dice «A través del canal del programa» |
 | Estado en la ruta | Ya existe: «Estado del caso (Llamada 1)», traducido a tres frases |
@@ -71,7 +72,7 @@ Revisión profesional, Barrera 1 (con su estrategia y quién apoya), Barrera 2, 
 Mover los campos de sección no cambia sus nombres de API ni lo que ya guardaste.
 
 ## Cuándo se puede generar
-Solo si el diagnóstico está **«Diligenciado»** (hace falta para el mapa) y el registro tiene la **revisión profesional** y la **Meta 1**.
+Solo si el diagnóstico está **«Diligenciado»** (hace falta para el mapa) y el registro tiene la **revisión profesional**, la **Meta 1** y la **fecha de la llamada 1** (campo «L1 Hora de inico»).
 Barreras, herramientas, recomendaciones y próxima llamada son opcionales: si están vacías, esa sección se omite del PDF (un caso de riesgo Bajo
 puede no tener próxima llamada). Si falta algo obligatorio, la página lo dice, y si un campo todavía no existe en Zoho, dice cuál.
 

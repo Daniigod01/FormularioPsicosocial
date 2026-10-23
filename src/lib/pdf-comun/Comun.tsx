@@ -55,22 +55,32 @@ export function Titulo({ titulo, subtitulo }: { titulo: string; subtitulo: strin
   );
 }
 
-/** Lista de datos (etiqueta pequeña arriba, valor en negrita), en filas de `columnas`. */
-export function Datos({ items, columnas }: { items: [string, string][]; columnas: number }) {
-  const filas: [string, string][][] = [];
-  for (let i = 0; i < items.length; i += columnas) filas.push(items.slice(i, i + columnas));
+/**
+ * Lista de datos (etiqueta pequeña arriba, valor en negrita).
+ * - `items` + `columnas`: cuadrícula pareja.
+ * - `filas`: filas a medida; cada dato puede llevar un peso de ancho (por defecto 1; 2 = el doble de ancho).
+ */
+export function Datos({ items, columnas, filas }: { items?: [string, string][]; columnas?: number; filas?: [string, string, number?][][] }) {
+  const grupos: [string, string, number?][][] = filas ?? [];
+  if (!filas && items && columnas) {
+    for (let i = 0; i < items.length; i += columnas) grupos.push(items.slice(i, i + columnas));
+  }
   return (
     <View style={base.datos}>
-      {filas.map((fila, i) => (
-        <View key={i} style={base.fila}>
-          {fila.map(([e, v]) => (
-            <View key={e} style={{ width: `${100 / columnas}%`, paddingVertical: 5, paddingRight: 8 }}>
-              <Text style={base.etiqueta}>{e}</Text>
-              <Text style={base.valor}>{v}</Text>
-            </View>
-          ))}
-        </View>
-      ))}
+      {grupos.map((fila, i) => {
+        const total = fila.reduce((suma, [, , peso]) => suma + (peso ?? 1), 0);
+        const ancho = columnas && !filas ? 100 / columnas : null; // cuadrícula pareja: las filas incompletas conservan el ancho de columna
+        return (
+          <View key={i} style={base.fila}>
+            {fila.map(([e, v, peso]) => (
+              <View key={e} style={{ width: `${ancho ?? ((peso ?? 1) / total) * 100}%`, paddingVertical: 5, paddingRight: 8 }}>
+                <Text style={base.etiqueta}>{e}</Text>
+                <Text style={base.valor}>{v}</Text>
+              </View>
+            ))}
+          </View>
+        );
+      })}
     </View>
   );
 }

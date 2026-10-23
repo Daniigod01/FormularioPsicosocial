@@ -10,6 +10,8 @@ export interface PlanAcompanamientoData {
   profesional: string;
   contacto: string;
   fechaDiagnostico: string;
+  /** Fecha en que se hizo la llamada 1 (sin hora) */
+  fechaLlamada1: string;
   estadoRuta: string;
   /** Solo la forma del radar; en el PDF no se muestran los números */
   ejes: EjePerfil[];
